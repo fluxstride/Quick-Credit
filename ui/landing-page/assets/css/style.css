@@ -1,0 +1,119 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Source+Sans+Pro:wght@400;600;700&display=swap");
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 10px;
+  --source-sans-pro: "Source Sans Pro", sans-serif;
+  --oswald-font: "Oswald", sans-serif;
+  --lemon-green: #159a9c;
+  --dark-greenish-blue: #002333;
+}
+
+nav {
+  background-color: #002333;
+  color: #deefe7;
+  font-family: var(--oswald-font);
+}
+
+nav .logo {
+  display: flex;
+  gap: 0.75rem;
+}
+
+nav .logo span {
+  font-size: 1.5rem;
+}
+
+.container {
+  padding: 16px 32px;
+  max-width: 1536px;
+  margin: 0 auto;
+}
+
+.hero {
+  padding-block: 3.75rem;
+  background: #fff;
+}
+
+.hero .hero-image img {
+  width: 100%;
+}
+
+.hero .heading {
+  font-family: var(--oswald-font);
+  font-weight: 700;
+  font-size: 4.8rem;
+  line-height: 4.8rem;
+  margin-top: 2.75rem;
+  color: var(--dark-greenish-blue);
+}
+
+.hero .heading span {
+  color: var(--lemon-green);
+  font-size: 3.6rem;
+  font-weight: 400;
+}
+
+.hero .body {
+  font-family: var(--source-sans-pro);
+  font-size: 1.8rem;
+  margin-top: 2rem;
+}
+
+.hero .links {
+  display: flex;
+  gap: 2rem;
+  margin-top: 5.6rem;
+}
+
+.hero .links a {
+  background: var(--dark-greenish-blue);
+  font-family: var(--source-sans-pro);
+  color: #fff;
+  padding: 1.2rem 3.6rem;
+  font-size: 1.8rem;
+  text-decoration: none;
+}
+
+.hero .links a:last-of-type {
+  background: #fff;
+  color: var(--dark-greenish-blue);
+  font-weight: 700;
+  border: 2.5px solid var(--dark-greenish-blue);
+}
+
+@media (min-width: 640px) {
+  .hero {
+    height: 90vh;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 3.6rem;
+  }
+
+  .hero .hero-image {
+    width: 50%;
+  }
+
+  .hero .text {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    padding-inline: 10.8rem;
+  }
+}
+@media (min-width: 1600px) {
+  .container {
+    padding-inline: 0;
+  }
+}
