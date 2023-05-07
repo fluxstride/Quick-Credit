@@ -1,0 +1,15 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 10px;
+  --source-sans-pro: "Source Sans Pro", sans-serif;
+  --oswald-font: "Oswald", sans-serif;
+  --lemon-green: #159a9c;
+  --dark-greenish-blue: #002333;
+}
