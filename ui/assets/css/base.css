@@ -15,3 +15,8 @@
   --lemon-green: #159a9c;
   --dark-greenish-blue: #002333;
 }
+
+a {
+  text-decoration: unset;
+  color: unset;
+}
