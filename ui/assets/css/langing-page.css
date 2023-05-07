@@ -1,12 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Source+Sans+Pro:wght@400;600;700&display=swap");
 @import url("./base.css");
-@import url("./nav-base.css");
-
-.container {
-  padding-inline: 1.6rem;
-  max-width: 1536px;
-  margin-inline: auto;
-}
+@import url("./shared.css");
 
 .hero {
   margin-block: 5rem;
@@ -88,18 +81,6 @@
 }
 
 @media (min-width: 720px) {
-  nav .logo img {
-    width: 2.8rem;
-  }
-
-  nav .logo span {
-    font-size: 2rem;
-  }
-
-  .container {
-    padding-inline: 2.8rem;
-  }
-
   .hero {
     margin-block: 8rem;
     display: flex;
@@ -118,11 +99,5 @@
 
   .hero .text {
     width: 50%;
-  }
-}
-
-@media (min-width: 1280px) and (max-width: 1600px) {
-  .container {
-    padding-inline: 10.8rem;
   }
 }

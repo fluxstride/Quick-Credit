@@ -1,0 +1,80 @@
+@import url("./base.css");
+@import url("./shared.css");
+
+.form-container {
+  margin-top: 8rem;
+}
+
+.form-heading {
+  color: var(--lemon-green);
+  font-family: var(--oswald-font);
+  font-size: 3.2rem;
+  text-align: center;
+}
+
+input:first-of-type {
+  margin-top: 2.4rem;
+}
+
+input {
+  display: block;
+  width: 100%;
+  margin-top: 1.6rem;
+  padding: 1.2rem 1.6rem;
+  font-size: 1.6rem;
+  border: 2px solid #002333;
+  font-family: var(--source-sans-pro);
+  outline: none;
+  position: relative;
+  transition: border 300ms ease-in-out;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border: 2px solid var(--lemon-green);
+}
+
+input[type="button"] {
+  background-color: #002333;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 3.2rem;
+  transition: color 300ms ease-in-out;
+}
+
+input[type="button"]:hover {
+  color: #deefe7;
+}
+
+.password {
+  width: fit-content;
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  width: 100%;
+}
+.password input {
+  width: inherit;
+}
+
+.password-show {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 1.5rem;
+  cursor: pointer;
+}
+
+input::placeholder {
+  color: rgba(0, 35, 51, 0.5);
+}
+
+@media (min-width: 640px) {
+  input,
+  .password {
+    width: 400px;
+    margin: 1.6rem auto 0;
+    font-size: 1.8rem;
+  }
+}
