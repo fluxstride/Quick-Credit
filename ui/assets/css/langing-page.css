@@ -1,41 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Source+Sans+Pro:wght@400;600;700&display=swap");
-
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-:root {
-  font-size: 10px;
-  --source-sans-pro: "Source Sans Pro", sans-serif;
-  --oswald-font: "Oswald", sans-serif;
-  --lemon-green: #159a9c;
-  --dark-greenish-blue: #002333;
-}
-
-nav {
-  background-color: #002333;
-  color: #deefe7;
-  font-family: var(--oswald-font);
-  padding-block: 1.6rem;
-}
-
-nav .logo {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-nav .logo img {
-  width: 2.4rem;
-  aspect-ratio: 1;
-}
-
-nav .logo span {
-  font-size: 1.6rem;
-}
+@import url("./base.css");
+@import url("./nav-base.css");
 
 .container {
   padding-inline: 1.6rem;
