@@ -1,0 +1,266 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Source+Sans+Pro:wght@400;600;700&display=swap");
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 10px;
+  --source-sans-pro: "Source Sans Pro", sans-serif;
+  --oswald-font: "Oswald", sans-serif;
+  --lemon-green: #159a9c;
+  --dark-greenish-blue: #002333;
+}
+
+/* Shared styling */
+.container {
+  padding-inline: 1.6rem;
+  max-width: 1536px;
+  margin-inline: auto;
+}
+
+@media (min-width: 1280px) and (max-width: 1600px) {
+  .container {
+    padding-inline: 10.8rem;
+  }
+}
+@media (min-width: 1600px) {
+  .container {
+    padding: unset;
+  }
+}
+/*  */
+
+/* Navigation */
+nav {
+  background-color: #002333;
+  color: #deefe7;
+  font-family: var(--oswald-font);
+  padding-block: 1.6rem;
+}
+
+nav .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+nav .logo img {
+  width: 2.4rem;
+  aspect-ratio: 1;
+}
+
+nav .logo span {
+  font-size: 1.6rem;
+}
+
+@media (min-width: 720px) {
+  nav .logo img {
+    width: 2.8rem;
+  }
+
+  nav .logo span {
+    font-size: 2rem;
+  }
+}
+/*  */
+
+/* Landing page  */
+.hero {
+  margin-block: 5rem;
+}
+
+.hero-image > img {
+  display: block;
+  width: 100%;
+}
+
+.hero-heading {
+  font-family: var(--oswald-font);
+  font-weight: 700;
+  font-size: 4rem;
+  line-height: 4rem;
+  margin-top: 2.75rem;
+  color: var(--dark-greenish-blue);
+}
+
+.hero-heading span {
+  color: var(--lemon-green);
+  font-size: 2.8rem;
+  font-weight: 400;
+}
+
+.hero-body {
+  font-family: var(--source-sans-pro);
+  font-size: 1.6rem;
+  margin-top: 2rem;
+}
+
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 4rem;
+}
+
+.hero-links a {
+  background: var(--dark-greenish-blue);
+  font-family: var(--source-sans-pro);
+  color: #fff;
+  padding: 0.8rem 2.4rem;
+  font-size: 1.6rem;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.hero-links a:last-of-type {
+  background: #fff;
+  color: var(--dark-greenish-blue);
+  font-weight: 700;
+  border: 2.5px solid var(--dark-greenish-blue);
+}
+
+@media (min-width: 375px) {
+  .hero-heading {
+    font-size: 4.8rem;
+    line-height: 4.8rem;
+  }
+
+  .hero-heading span {
+    font-size: 3.6rem;
+  }
+
+  .hero-body {
+    font-size: 1.8rem;
+  }
+
+  .hero-links {
+    gap: 2rem;
+    margin-top: 5.6rem;
+  }
+
+  .hero-links a {
+    padding: 1.2rem 3.6rem;
+    font-size: 1.8rem;
+  }
+}
+
+@media (min-width: 720px) {
+  .hero {
+    margin-block: 8rem;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 3.6rem;
+  }
+
+  .hero-heading {
+    margin-top: unset;
+  }
+}
+/*  */
+
+a {
+  text-decoration: unset;
+  color: unset;
+}
+
+.form-container {
+  margin: 8rem 0 4rem;
+}
+
+.form-heading {
+  color: var(--lemon-green);
+  font-family: var(--oswald-font);
+  font-size: 3.2rem;
+  text-align: center;
+}
+
+input:first-of-type {
+  margin-top: 2.4rem;
+}
+
+input {
+  width: 100%;
+  display: block;
+  margin-top: 1.6rem;
+  padding: 1.2rem 1.6rem;
+  font-size: 1.6rem;
+  border: 2px solid #002333;
+  font-family: var(--source-sans-pro);
+  outline: none;
+  position: relative;
+  transition: border 350ms ease-in-out;
+}
+
+input::before {
+  content: "hello";
+  position: absolute;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+  border: 2px solid var(--lemon-green);
+}
+
+input[type="submit"] {
+  background-color: #002333;
+  color: #fff;
+  letter-spacing: 1px;
+  cursor: pointer;
+  margin-top: 3.2rem;
+  transition: color 300ms ease-in-out;
+}
+
+input[type="button"]:hover {
+  color: #deefe7;
+}
+
+.password {
+  width: 100%;
+  position: relative;
+}
+
+.password-show {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 1.5rem;
+  cursor: pointer;
+}
+
+input::placeholder {
+  color: rgba(0, 35, 51, 0.5);
+}
+
+.form-links {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+}
+.form-links a {
+  text-decoration: underline;
+  font-size: 1.6rem;
+  margin-top: 0.8rem;
+  font-family: var(--source-sans-pro);
+  font-weight: 600;
+}
+
+.form-links span {
+  margin-top: 0.8rem;
+  font-size: 1.6rem;
+  font-family: var(--source-sans-pro);
+}
+
+@media (min-width: 640px) {
+  .form-container {
+    width: 400px;
+    margin-inline: auto;
+    font-size: 1.8rem;
+  }
+}
