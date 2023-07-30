@@ -14,3 +14,25 @@ password_show_btn &&
     password.type = "password";
     show_password = false;
   });
+
+const modal_backdrop = document.querySelector(".backdrop");
+const loan_details = document.querySelector("#loan-details");
+
+const modals = {
+  loan_details,
+};
+
+modal_backdrop.addEventListener("click", (e) => {
+  if (e.target === e.currentTarget) {
+    modals[e.currentTarget.dataset["modal"]].style.display = "none";
+  }
+});
+
+function openModal(modal) {
+  modals[modal].style.display = "block";
+  document.body.style.height = "100vh";
+}
+
+function closeModal(modal) {
+  modals[modal].style.display = "none";
+}

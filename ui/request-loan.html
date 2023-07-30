@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./assets/styles.css" />
+    <script async src="./assets/script.js"></script>
+    <title>Sign Up</title>
+  </head>
+  <body>
+    <nav id="dashboard">
+      <div class="container">
+        <a href="" class="logo">
+          <img src="./assets/images/credit_logo.svg" alt="" />
+          <span>Quick Credit</span>
+        </a>
+        <div class="nav-right">
+          <span>
+            <img src="./assets/images/notification_bell.svg" alt="" />
+          </span>
+          <span>
+            <img src="./assets/images/user_icon.svg" alt="" />
+          </span>
+        </div>
+      </div>
+    </nav>
+    <main class="container">
+      <div class="dashboard">
+        <a href="./user.html" class="go-back">
+          <img src="./assets/images/chevron_left.svg" alt="" />
+          <span> Go back </span>
+        </a>
+        <h1 class="title">Request Loan</h1>
+
+        <div class="form-container" id="request-loan">
+          <form id="" class="">
+            <input type="text" placeholder="Loan Amount" />
+            <select name="" id="">
+              <option value="">6 months</option>
+              <option value="">12 months</option>
+            </select>
+            <textarea rows="5" placeholder="Reason for request"></textarea>
+            <input type="submit" value="Apply" />
+          </form>
+        </div>
+
+        <div class="application-history">
+          <h1 class="title">Application History</h1>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Amount</th>
+                  <th>Tenor</th>
+                  <th>Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>500,000</td>
+                  <td>12 months</td>
+                  <td>24/05/2023</td>
+                  <td onclick="openModal('loan_details')">view details</td>
+                </tr>
+                <tr>
+                  <td>500,000</td>
+                  <td>12 months</td>
+                  <td>24/05/2023</td>
+                  <td onclick="openModal('loan_details')">view details</td>
+                </tr>
+                <tr>
+                  <td>500,000</td>
+                  <td>12 months</td>
+                  <td>24/05/2023</td>
+                  <td onclick="openModal('loan_details')">view details</td>
+                </tr>
+                <tr>
+                  <td>500,000</td>
+                  <td>12 months</td>
+                  <td>24/05/2023</td>
+                  <td onclick="openModal('loan_details')">view details</td>
+                </tr>
+                <tr>
+                  <td>500,000</td>
+                  <td>12 months</td>
+                  <td>24/05/2023</td>
+                  <td onclick="openModal('loan_details')">view details</td>
+                </tr>
+                <tr>
+                  <td>500,000</td>
+                  <td>12 months</td>
+                  <td>24/05/2023</td>
+                  <td onclick="openModal('loan_details')">view details</td>
+                </tr>
+                <tr>
+                  <td>500,000</td>
+                  <td>12 months</td>
+                  <td>24/05/2023</td>
+                  <td onclick="openModal('loan_details')">view details</td>
+                </tr>
+                <tr>
+                  <td>500,000</td>
+                  <td>12 months</td>
+                  <td>24/05/2023</td>
+                  <td onclick="openModal('loan_details')">view details</td>
+                </tr>
+                <tr>
+                  <td>500,000</td>
+                  <td>12 months</td>
+                  <td>24/05/2023</td>
+                  <td onclick="openModal('loan_details')">view details</td>
+                </tr>
+                <tr>
+                  <td>500,000</td>
+                  <td>12 months</td>
+                  <td>24/05/2023</td>
+                  <td onclick="openModal('loan_details')">view details</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-pagination">
+            <span class="page">1 - 10 of Page 1 </span>
+            <span class="right">
+              <span>
+                <span> Rows per page: </span>
+                <select name="" id="">
+                  <option value="10">10</option>
+                  <option value="5">5</option>
+                </select>
+              </span>
+              <span>
+                <button>Previous</button>
+                <button>Next</button>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div id="loan-details" class="modal">
+      <div class="backdrop" data-modal="loan_details">
+        <div class="content">
+          <div class="header">
+            <div class="title">
+              <img src="./assets/images/loan_details.svg" alt="" />
+              <h3>Loan details</h3>
+            </div>
+            <div class="close" onclick="closeModal('loan_details')">
+              <img src="./assets/images/cross.svg" alt="" />
+            </div>
+          </div>
+          <div class="body">
+            <div class="field">
+              <p class="title">Loan ID:</p>
+              <p>32</p>
+            </div>
+            <div class="field">
+              <p class="title">Amount:</p>
+              <p>500,000</p>
+            </div>
+            <div class="field">
+              <p class="title">Interest:</p>
+              <p>5%</p>
+            </div>
+            <div class="field">
+              <p class="title">Tenor:</p>
+              <p>12 months</p>
+            </div>
+            <div class="field">
+              <p class="title">Installment Payment:</p>
+              <p>43,750</p>
+            </div>
+            <div class="field">
+              <p class="title">Status:</p>
+              <p>Active</p>
+            </div>
+            <div class="field">
+              <p class="title">Date:</p>
+              <p>24/05/2023</p>
+            </div>
+
+            <a href=""> view repayment history </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
