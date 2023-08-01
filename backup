@@ -1,0 +1,58 @@
+<div id="loan-details" class="modal">
+  <div class="backdrop" data-modal="loan_details">
+    <div class="content">
+      <div class="header">
+        <div class="title">
+          <img src="./assets/images/loan_details.svg" alt="" />
+          <h3>Loan details</h3>
+        </div>
+        <div class="close" onclick="closeModal('loan_details')">
+          <img src="./assets/images/cross.svg" alt="" />
+        </div>
+      </div>
+      <div class="body">
+        <div class="field">
+          <p class="title">Loan ID:</p>
+          <p>32</p>
+        </div>
+        <div class="field">
+          <p class="title">Amount:</p>
+          <p>500,000</p>
+        </div>
+        <div class="field">
+          <p class="title">Interest:</p>
+          <p>5%</p>
+        </div>
+        <div class="field">
+          <p class="title">Tenor:</p>
+          <p>12 months</p>
+        </div>
+        <div class="field">
+          <p class="title">Installment Payment:</p>
+          <p>43,750</p>
+        </div>
+        <div class="field">
+          <p class="title">Status:</p>
+          <p>Active</p>
+        </div>
+        <div class="field">
+          <p class="title">Date:</p>
+          <p>24/05/2023</p>
+        </div>
+
+        <a href=""> view repayment history </a>
+      </div>
+    </div>
+  </div>
+
+  modal_backdrop && modal_backdrop.addEventListener("click", (e) => { if
+  (e.target === e.currentTarget) {
+  modals[e.currentTarget.dataset["modal"]].style.display = "none";
+  document.body.style.overflow = "auto"; } }); function openModal(modal) {
+  modals[modal].style.display = "block"; document.body.style.overflow =
+  "hidden"; } function closeModal(modal) { modals[modal].style.display = "none";
+  document.body.style.overflow = "auto"; }
+</div>
+
+const modal_backdrop = document.querySelector(".backdrop"); const loan_details =
+document.querySelector("#loan-details"); const modals = { loan_details, };
