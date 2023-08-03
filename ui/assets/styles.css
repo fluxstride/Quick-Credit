@@ -403,7 +403,7 @@ input::placeholder {
 
 .data table {
   width: 100%;
-  min-width: 700px;
+  min-width: 1000px;
   border-collapse: collapse;
 }
 
@@ -413,19 +413,23 @@ input::placeholder {
   text-align: left;
   padding: 1.2rem;
 }
-.data tr {
-  border-bottom: 2px solid #bfc8cc !important;
+.data tr,
+.data th,
+.data td {
+  border: 2px solid #bfc8cc !important;
 }
-.data tr:nth-child(even) {
+
+.data tbody tr:nth-of-type(odd) {
   background-color: var(--lemon-green-overlay);
 }
-/* .data td:last-of-type {
+[data-table="loans"] td:last-of-type {
   text-decoration: underline;
   color: var(--lemon-green);
   cursor: pointer;
-} */
+}
 
 .table-pagination {
+  visibility: hidden;
   margin: 1.6rem 0 10rem;
   display: flex;
   justify-content: space-between;

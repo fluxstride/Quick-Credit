@@ -10,29 +10,18 @@ const password = document.querySelector(".password input");
 if (password_show_btn) {
   let show_password = false;
 
-  password_show_btn.addEventListener("click", () => {
-    if (!show_password) {
-      password_show_btn.src = "./assets/images/eye-off.svg";
-      password.type = "text";
-      show_password = true;
-      return;
-    }
-    password_show_btn.src = "./assets/images/eye-on.svg";
-    password.type = "password";
-    show_password = false;
+  password_show_btn.addEventListener("click", (e) => {
+    e.ta.src = show_password
+      ? "./assets/images/eye-on.svg"
+      : "./assets/images/eye-off.svg";
+    password.type = !show_password ? "text" : "password";
+    show_password = !show_password;
   });
 }
 
-let data_table = document.querySelector(".data");
-let thead = data_table && data_table.querySelector("table thead");
-let tbody = data_table && data_table.querySelector("table tbody");
-
 // Pagination variables
-let activePage = 1;
-let rowsPerPage = 10;
-let count;
-let totalPages;
-let calculatedRows;
+let active_page = 1,
+  rows_per_page = 10;
 
 let table_pagination = document.querySelector(".table-pagination");
 
@@ -44,131 +33,148 @@ if (table_pagination) {
   prev_button = table_pagination.querySelector("#prev");
   next_button = table_pagination.querySelector("#next");
 
-  rows_per_page_elem.addEventListener("change", (e) => {
-    rowsPerPage = e.target.value * 1;
-    activePage = 1;
-    populateTable();
-  });
+  rows_per_page_elem.addEventListener(
+    "change",
+    (e) => (
+      (rows_per_page = e.target.value * 1), (active_page = 1), generateTable()
+    )
+  );
 
-  [...pagination_buttons].forEach((button) =>
-    button.addEventListener("click", () => {
-      if (button.id === "next") {
-        activePage += 1;
-      } else {
-        activePage -= 1;
-      }
-      populateTable();
-    })
+  pagination_buttons.forEach((button) =>
+    button.addEventListener(
+      "click",
+      () => (
+        button.id === "next" ? (active_page += 1) : (active_page -= 1),
+        generateTable()
+      )
+    )
   );
 }
 
 /**
  * Table tabs switching logic
  */
-let loan_status = "Active";
 
-let table_tabs = document.querySelectorAll(".table-tabs .tab");
+let table_tabs = document.querySelector(".table-tabs");
+let active_tab;
 
-table_tabs.forEach((tab) => {
-  tab.addEventListener("click", () => {
-    if (tab.innerText === loan_status) return;
-    table_tabs.forEach((tab) => {
-      if ([...tab.classList].includes("tab--active")) {
-        tab.classList.remove("tab--active");
+if (table_tabs) {
+  let page_table_tabs = {
+    loans: ["Active", "Paid"],
+  };
+
+  let active_table = document.querySelector(".table-tabs").dataset["tab"];
+  active_tab = page_table_tabs[active_table][0];
+
+  let tabs = table_tabs.querySelectorAll(".tab");
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      if (tab.className.includes("tab--active")) {
         return;
       }
-      tab.classList.add("tab--active");
-    });
 
-    loan_status = tab.innerText;
-    activePage = 1;
-    rowsPerPage = 10;
-    rows_per_page_elem.value = 10;
-    populateTable();
+      tab.classList.add("tab--active"), (active_tab = tab.innerText);
+
+      tabs.forEach(
+        (tab) =>
+          tab.innerText !== active_tab && tab.classList.remove("tab--active")
+      );
+
+      (active_page = 1), (rows_per_page = 10), (rows_per_page_elem.value = 10);
+      generateTable();
+    });
   });
-});
+}
 
 /**
- * Table population logic
+ * Table generation logic
  */
-function populateTable() {
-  thead.innerHTML = "";
-  tbody.innerHTML = "";
+let data_table = document.querySelector(".data");
+
+function generateTable() {
+  let count, totalPages, calculatedRows;
+
+  let thead = data_table && data_table.querySelector("table thead");
+  let tbody = data_table && data_table.querySelector("table tbody");
+
+  (thead.innerHTML = ""), (tbody.innerHTML = "");
 
   let table_to_display = data_table.dataset["table"];
 
-  if (table_to_display) {
-    let table_data = { ...data[table_to_display] };
+  let table_data = data[table_to_display];
 
-    if (table_to_display === "loans") {
-      table_data.datas = table_data.datas.filter(
-        (data) => data.status === loan_status
-      );
-    }
+  if (table_to_display === "loans") {
+    table_data = table_data.filter((data) => data["Status"] === active_tab);
+  }
 
-    count = table_data.datas.length;
-    totalPages = Math.ceil(count / rowsPerPage);
-    calculatedRows = table_data.datas.slice(
-      (activePage - 1) * rowsPerPage,
-      activePage * rowsPerPage
-    );
-    let beginning = activePage === 1 ? 1 : rowsPerPage * (activePage - 1) + 1;
-    let end = activePage === totalPages ? count : beginning + rowsPerPage - 1;
+  count = table_data.length;
+  totalPages = Math.ceil(count / rows_per_page);
+  calculatedRows = table_data.slice(
+    (active_page - 1) * rows_per_page,
+    active_page * rows_per_page
+  );
 
-    if (count <= 5) {
-      table_pagination.style.visibility = "hidden";
-    } else {
-      table_pagination.style.visibility = "visible";
-    }
+  let beginning = active_page === 1 ? 1 : rows_per_page * (active_page - 1) + 1;
+  let end = active_page === totalPages ? count : beginning + rows_per_page - 1;
 
-    if (!(table_pagination.style.visibility === "hidden")) {
-      if (activePage === 1) {
-        prev_button.disabled = true;
-      } else {
-        prev_button.disabled = false;
-      }
+  table_pagination.style.visibility = count <= 5 ? "hidden" : "visible";
 
-      if (activePage === Math.ceil((totalPages * rowsPerPage) / rowsPerPage)) {
-        next_button.disabled = true;
-      } else {
-        next_button.disabled = false;
-      }
+  if (table_pagination.style.visibility === "visible") {
+    prev_button.disabled = active_page === 1;
 
-      let page = table_pagination.querySelector(".page");
-      page.innerText = `${beginning}-${end} of Page ${activePage}`;
-    }
+    next_button.disabled =
+      active_page === Math.ceil((totalPages * rows_per_page) / rows_per_page);
 
-    let tr = document.createElement("tr");
+    let page = table_pagination.querySelector(".page");
+    page.innerText = `${beginning}-${end} of Page ${active_page}`;
+  }
 
-    table_data["headings"].forEach((heading) => {
-      let th = document.createElement("th");
-      th.innerText = heading;
-      tr.append(th);
-    });
+  let tr = document.createElement("tr");
 
-    thead.appendChild(tr);
+  let table_headings = Object.keys(table_data[0]);
 
-    calculatedRows.forEach((data) => {
-      tr = document.createElement("tr");
-      let td;
+  table_headings.forEach((heading) => {
+    let th = document.createElement("th");
+    th.innerText = heading;
+    tr.append(th);
+  });
 
-      for (let key of Object.keys(data)) {
+  thead.appendChild(tr);
+
+  calculatedRows.forEach((data) => {
+    tr = document.createElement("tr");
+    let td;
+    let index = 0;
+
+    for (let [, value] of Object.entries(data)) {
+      td = document.createElement("td");
+      td.innerText = value;
+      tr.appendChild(td);
+
+      if (index === Object.keys(data).length - 1) {
+        if (table_to_display !== "loans") {
+          continue;
+        }
         td = document.createElement("td");
-        td.innerText = data[key];
+        let history_link = document.createElement("a");
+        // history_link.setAttribute("href", "#");
+        history_link.innerText = "repayment history";
+        td.appendChild(history_link);
+        td.style.width = "20ch";
         tr.appendChild(td);
       }
+      index++;
+    }
 
-      tbody.appendChild(tr);
-    });
-  }
+    tbody.appendChild(tr);
+  });
 }
 
 async function fetchData() {
   let res = await fetch("./assets/data.json");
   data = await res.json();
-  data && populateTable();
+  generateTable();
 }
 
-if (data_table) {
-  window.addEventListener("load", fetchData);
-}
+data_table && window.addEventListener("load", fetchData);
