@@ -1,334 +1,247 @@
 {
-  "application_history": {
-    "headings": [
-      "Amount",
-      "Tenor",
-      "Status",
-      "Date"
-    ],
-    "datas": [
-      {
-        "amount": 500000,
-        "tenor": "12 months",
-        "status": "Approved",
-        "date": "24/05/2023"
-      },
-      {
-        "amount": 500000,
-        "tenor": "12 months",
-        "status": "Denied",
-        "date": "24/05/2023"
-      }
-    ]
-  },
-  "loans": {
-    "headings": [
-      "Loan ID",
-      "Amount",
-      "Interest",
-      "Tenor",
-      "Installment",
-      "Status",
-      "Date"
-    ],
-    "datas": [
-      {
-        "loan_id": 1,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Active",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      },
-      {
-        "loan_id": 2,
-        "amount": 500000,
-        "interest": "5%",
-        "tenor": "12 months",
-        "installment": 43750,
-        "status": "Paid",
-        "date": "24/05/2023"
-      }
-    ]
-  }
+  "application_history": [
+    {
+      "Amount": 500000,
+      "Tenor": "12 months",
+      "Status": "Approved",
+      "Date": "24/05/2023"
+    },
+    {
+      "Amount": 500000,
+      "Tenor": "12 months",
+      "Status": "Approved",
+      "Date": "24/05/2023"
+    }
+  ],
+  "loans": [
+    {
+      "Loan ID": 1,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Active",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 2,
+      "Amount": 500000,
+      "Interest": "5%",
+      "Tenor": "12 months",
+      "Installment": 43750,
+      "Status": "Paid",
+      "Date": "24/05/2023"
+    }
+  ],
+  "repayment_history": [
+    {
+      "Loan ID": 1,
+      "Amount": 43750,
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 1,
+      "Amount": 43750,
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 1,
+      "Amount": 43750,
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 1,
+      "Amount": 43750,
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 1,
+      "Amount": 43750,
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 1,
+      "Amount": 43750,
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 1,
+      "Amount": 43750,
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 1,
+      "Amount": 43750,
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 1,
+      "Amount": 43750,
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 1,
+      "Amount": 43750,
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 1,
+      "Amount": 43750,
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 1,
+      "Amount": 43750,
+      "Date": "24/05/2023"
+    },
+    {
+      "Loan ID": 1,
+      "Amount": 43750,
+      "Date": "24/05/2023"
+    }
+  ]
 }
