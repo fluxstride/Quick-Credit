@@ -389,11 +389,24 @@ input::placeholder {
   font-family: var(--source-sans-pro);
   border: 2px solid var(--dark-greenish-blue);
   cursor: pointer;
+  transition: all 200ms ease-in-out;
+
+  &:hover {
+    background-color: var(--dark-greenish-blue);
+    color: #fff;
+  }
 }
 
 .table-tabs .tab--active {
   background-color: var(--dark-greenish-blue);
   color: #fff;
+}
+
+.table-tabs .tab:first-child {
+  border-right: 0;
+}
+.table-tabs .tab:last-child {
+  border-left: 0;
 }
 
 .table-container {
@@ -408,9 +421,10 @@ input::placeholder {
 }
 
 [data-table="users"] table {
-  width: 100%;
   min-width: 1300px;
-  border-collapse: collapse;
+}
+[data-table="loan_applications"] table {
+  min-width: 1500px;
 }
 
 .data th,
