@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./assets/styles.css" />
     <script defer type="module" src="./assets/script.js"></script>
-    <title>Quick Credit | Request Loan</title>
+    <title>Quick Credit | Active Loans</title>
   </head>
   <body>
     <nav id="dashboard">
@@ -31,26 +31,18 @@
           <img src="./assets/images/chevron_left.svg" alt="" />
           <span> Go back </span>
         </div>
-        <h1 class="title">Request Loan</h1>
-
-        <div class="form-container" id="request-loan">
-          <form id="" class="">
-            <input type="text" placeholder="Loan Amount" />
-            <select name="" id="">
-              <option value="">6 months</option>
-              <option value="">12 months</option>
-            </select>
-            <textarea rows="5" placeholder="Reason for request"></textarea>
-            <input type="submit" value="Apply" />
-          </form>
+        <h1 class="title">Loans</h1>
+        <div class="table-tabs" data-tab="loans">
+          <div class="tab tab--active">Active</div>
+          <div class="tab">Paid</div>
         </div>
-
-        <div class="data" data-table="application_history">
-          <h1 class="title">Application History</h1>
+        <div class="data" data-table="loans" data-role="admin">
           <div class="table-container">
             <table>
-              <thead></thead>
-              <tbody></tbody>
+              <thead>
+              </thead>
+              <tbody>
+              </tbody>
             </table>
           </div>
           <div class="table-pagination">
@@ -64,13 +56,11 @@
                 </select>
               </span>
               <span>
-                <button>Previous</button>
-                <button>Next</button>
+                <button id="prev">Previous</button>
+                <button id="next">Next</button>
               </span>
             </span>
           </div>
-        </div>
-      </div>
     </main>
   </body>
 </html>
