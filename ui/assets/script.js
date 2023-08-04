@@ -1,21 +1,22 @@
-let data;
+import data from "../assets/data.json" assert { type: "json" };
 
-const password_show_btn = document.querySelector(".password-show");
-const password = document.querySelector(".password input");
-
+let data_table = document.querySelector(".data");
+let data_to_display = data_table && data_table.dataset["table"];
+let table_data = data[data_to_display];
 /**
  *  Password show and hide logic
  */
 
-if (password_show_btn) {
-  let show_password = false;
+const password_show_btn = document.querySelector(".password-show");
+const password = document.querySelector(".password input");
 
+if (password_show_btn) {
   password_show_btn.addEventListener("click", (e) => {
-    e.ta.src = show_password
-      ? "./assets/images/eye-on.svg"
-      : "./assets/images/eye-off.svg";
-    password.type = !show_password ? "text" : "password";
-    show_password = !show_password;
+    const isHidden = password.type === "password";
+    e.target.src = isHidden
+      ? "./assets/images/eye-off.svg"
+      : "./assets/images/eye-on.svg";
+    password.type = isHidden ? "text" : "password";
   });
 }
 
@@ -36,7 +37,9 @@ if (table_pagination) {
   rows_per_page_elem.addEventListener(
     "change",
     (e) => (
-      (rows_per_page = e.target.value * 1), (active_page = 1), generateTable()
+      (rows_per_page = e.target.value * 1),
+      (active_page = 1),
+      generateTable(table_data)
     )
   );
 
@@ -45,11 +48,26 @@ if (table_pagination) {
       "click",
       () => (
         button.id === "next" ? (active_page += 1) : (active_page -= 1),
-        generateTable()
+        generateTable(table_data)
       )
     )
   );
 }
+
+// Table search logic
+let search_input = document.querySelector(".search input");
+search_input &&
+  search_input.addEventListener("keyup", ({ target: { value } }) => {
+    active_page = 1;
+    table_data = data[data_to_display].filter((item) => {
+      return (
+        item["Email"].toLowerCase().includes(value.toLowerCase()) ||
+        item["First Name"].toLowerCase().includes(value.toLowerCase()) ||
+        item["Last Name"].toLowerCase().includes(value.toLowerCase())
+      );
+    });
+    generateTable(table_data);
+  });
 
 /**
  * Table tabs switching logic
@@ -61,6 +79,7 @@ let active_tab;
 if (table_tabs) {
   let page_table_tabs = {
     loans: ["Active", "Paid"],
+    users: ["Unverified", "Verified"],
   };
 
   let active_table = document.querySelector(".table-tabs").dataset["tab"];
@@ -81,8 +100,12 @@ if (table_tabs) {
           tab.innerText !== active_tab && tab.classList.remove("tab--active")
       );
 
-      (active_page = 1), (rows_per_page = 10), (rows_per_page_elem.value = 10);
-      generateTable();
+      active_page = 1;
+      rows_per_page = 10;
+      rows_per_page_elem.value = 10;
+      table_data = data[data_to_display];
+      search_input && (search_input.value = "");
+      generateTable(table_data);
     });
   });
 }
@@ -90,35 +113,30 @@ if (table_tabs) {
 /**
  * Table generation logic
  */
-let data_table = document.querySelector(".data");
 
-function generateTable() {
-  let count, totalPages, calculatedRows;
+function generateTable(table_data) {
+  let thead = data_table.querySelector("table thead");
+  let tbody = data_table.querySelector("table tbody");
 
-  let thead = data_table && data_table.querySelector("table thead");
-  let tbody = data_table && data_table.querySelector("table tbody");
-
+  // clear the existing table data
   (thead.innerHTML = ""), (tbody.innerHTML = "");
 
-  let table_to_display = data_table.dataset["table"];
-
-  let table_data = data[table_to_display];
-
-  if (table_to_display === "loans") {
+  if (table_tabs) {
     table_data = table_data.filter((data) => data["Status"] === active_tab);
   }
 
-  count = table_data.length;
-  totalPages = Math.ceil(count / rows_per_page);
-  calculatedRows = table_data.slice(
+  let dataCount = table_data.length;
+  let totalPages = Math.ceil(dataCount / rows_per_page);
+  let calculatedRows = table_data.slice(
     (active_page - 1) * rows_per_page,
     active_page * rows_per_page
   );
 
   let beginning = active_page === 1 ? 1 : rows_per_page * (active_page - 1) + 1;
-  let end = active_page === totalPages ? count : beginning + rows_per_page - 1;
+  let end =
+    active_page === totalPages ? dataCount : beginning + rows_per_page - 1;
 
-  table_pagination.style.visibility = count <= 5 ? "hidden" : "visible";
+  table_pagination.style.visibility = dataCount <= 5 ? "hidden" : "visible";
 
   if (table_pagination.style.visibility === "visible") {
     prev_button.disabled = active_page === 1;
@@ -129,52 +147,79 @@ function generateTable() {
     let page = table_pagination.querySelector(".page");
     page.innerText = `${beginning}-${end} of Page ${active_page}`;
   }
-
   let tr = document.createElement("tr");
-
-  let table_headings = Object.keys(table_data[0]);
-
+  let table_headings = Object.keys(data[data_to_display][0]);
   table_headings.forEach((heading) => {
-    let th = document.createElement("th");
-    th.innerText = heading;
-    tr.append(th);
-  });
-
-  thead.appendChild(tr);
-
-  calculatedRows.forEach((data) => {
-    tr = document.createElement("tr");
-    let td;
-    let index = 0;
-
-    for (let [, value] of Object.entries(data)) {
-      td = document.createElement("td");
-      td.innerText = value;
-      tr.appendChild(td);
-
-      if (index === Object.keys(data).length - 1) {
-        if (table_to_display !== "loans") {
-          continue;
-        }
-        td = document.createElement("td");
-        let history_link = document.createElement("a");
-        // history_link.setAttribute("href", "#");
-        history_link.innerText = "repayment history";
-        td.appendChild(history_link);
-        td.style.width = "20ch";
-        tr.appendChild(td);
-      }
-      index++;
+    let th;
+    switch (heading) {
+      case "Phone Number":
+        th = `<th style="max-width:20ch">${heading}</th>`;
+        break;
+      case "Home Address":
+      case "Work Address":
+        th = `<th style="max-width:30ch">${heading}</th>`;
+        break;
+      default:
+        th = `<th>${heading}</th>`;
+        break;
     }
-
-    tbody.appendChild(tr);
+    tr.innerHTML += th;
   });
+  thead.append(tr);
+
+  if (table_data.length > 0) {
+    calculatedRows.forEach((row) => {
+      tr = document.createElement("tr");
+      let index = 0;
+
+      for (let [, value] of Object.entries(row)) {
+        let td = `<td>${value}</td>`;
+        tr.innerHTML += td;
+
+        if (index === Object.keys(row).length - 1) {
+          if (data_to_display === "loans") {
+            td = `<td style="width:20ch"><a href="">repayment history</a></td>`;
+            tr.innerHTML += td;
+          }
+
+          if (data_to_display === "users") {
+            if (active_tab === "Unverified") {
+              td = ` 
+            <td>
+              <div class="admin-actions">
+                <div class="admin-action accept">
+                  <span>Verify</span>
+                  <img src="./assets/images/check_.svg" alt="" />
+                </div>
+                <div class="admin-action decline">
+                  <span>Decline</span>
+                  <img src="./assets/images/model_x.svg" alt="" />
+                </div>
+              </div>
+            </td>
+            `;
+            } else {
+              td = `
+            <td>
+              <div class="admin-actions" >
+                <div class="admin-action decline" style="margin:0 auto;">
+                  <span>Revert</span>
+                  <img src="./assets/images/model_x.svg" alt="" />
+                </div>
+              </div>
+            </td>
+            `;
+            }
+
+            tr.innerHTML += td;
+          }
+        }
+        index++;
+      }
+
+      tbody.append(tr);
+    });
+  }
 }
 
-async function fetchData() {
-  let res = await fetch("./assets/data.json");
-  data = await res.json();
-  generateTable();
-}
-
-data_table && window.addEventListener("load", fetchData);
+data_table && generateTable(table_data);
