@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./assets/styles.css" />
     <script defer type="module" src="./assets/script.js"></script>
-    <title>Quick Credit | Active Loans</title>
+    <title>Quick Credit | Sign Up</title>
   </head>
   <body>
     <nav id="dashboard">
       <div class="container">
-        <a href="./user.html" class="logo">
+        <a href="./admin.html" class="logo">
           <img src="./assets/images/credit_logo.svg" alt="" />
           <span>Quick Credit</span>
         </a>
@@ -27,16 +27,22 @@
     </nav>
     <main class="container">
       <div class="dashboard">
-        <a href="./user.html" class="go-back">
+        <a href="./admin.html" class="go-back">
           <img src="./assets/images/chevron_left.svg" alt="" />
           <span> Go back </span>
         </a>
-        <h1 class="title">Loans</h1>
-        <div class="table-tabs" data-tab="loans">
-          <div class="tab tab--active">Active</div>
-          <div class="tab">Paid</div>
+        <h1 class="title">Users</h1>
+        <div class="table-head">
+          <span class="table-tabs" data-tab="users">
+            <div class="tab tab--active">Unverified</div>
+            <div class="tab">Verified</div>
+          </span>
+          <span class="search">
+            <img src="./assets/images/search.svg" alt="">
+            <input type="text" placeholder="Search">
+          </span>
         </div>
-        <div class="data" data-table="loans">
+        <div class="data" data-table="users">
           <div class="table-container">
             <table>
               <thead>
@@ -64,3 +70,4 @@
     </main>
   </body>
 </html>
+x
