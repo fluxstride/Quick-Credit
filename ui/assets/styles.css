@@ -58,7 +58,6 @@ a {
   font-size: 1.6rem;
   font-weight: 600;
   margin-bottom: 3.2rem;
-  cursor: pointer;
 }
 /*  */
 
@@ -421,7 +420,6 @@ input::placeholder {
   border-collapse: collapse;
 }
 
-[data-role="admin"] table,
 [data-table="users"] table {
   min-width: 1300px;
 }
@@ -444,8 +442,6 @@ input::placeholder {
 .data tbody tr:nth-of-type(odd) {
   background-color: var(--lemon-green-overlay);
 }
-
-[data-role="admin"] td:nth-of-type(8),
 [data-table="loans"] td:last-of-type {
   text-decoration: underline;
   color: var(--lemon-green);
@@ -616,9 +612,8 @@ input::placeholder {
 .table-head .search {
   display: flex;
   align-items: center;
-  border: 2px solid #bfc8cc;
+  border: 1px solid rgb(0, 35, 51, 0.5);
   padding: 0 1rem;
-  transition: all 300ms ease-in-out;
 }
 
 @media screen and (max-width: 720px) {
