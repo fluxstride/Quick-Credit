@@ -150,7 +150,9 @@ function generateTable(table_data) {
   // clear the existing table data
   (thead.innerHTML = ""), (tbody.innerHTML = "");
 
-  table_data = table_data?.filter((data) => data["Status"] === active_tab);
+  if (active_tab) {
+    table_data = table_data?.filter((data) => data["Status"] === active_tab);
+  }
 
   let dataCount = table_data.length;
   let totalPages = Math.ceil(dataCount / rows_per_page);
