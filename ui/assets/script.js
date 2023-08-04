@@ -80,6 +80,7 @@ if (table_tabs) {
   let page_table_tabs = {
     loans: ["Active", "Paid"],
     users: ["Unverified", "Verified"],
+    loan_applications: ["Pending", "Approved", "Rejected"],
   };
 
   let active_table = document.querySelector(".table-tabs").dataset["tab"];
@@ -165,6 +166,7 @@ function generateTable(table_data) {
     }
     tr.innerHTML += th;
   });
+
   thead.append(tr);
 
   if (table_data.length > 0) {
@@ -210,6 +212,28 @@ function generateTable(table_data) {
             </td>
             `;
             }
+
+            tr.innerHTML += td;
+          }
+
+          if (
+            data_to_display === "loan_applications" &&
+            active_tab === "Pending"
+          ) {
+            td = ` 
+            <td>
+              <div class="admin-actions">
+                <div class="admin-action accept">
+                  <span>Approve</span>
+                  <img src="./assets/images/check_.svg" alt="" />
+                </div>
+                <div class="admin-action decline">
+                  <span>Reject</span>
+                  <img src="./assets/images/model_x.svg" alt="" />
+                </div>
+              </div>
+            </td>
+            `;
 
             tr.innerHTML += td;
           }
