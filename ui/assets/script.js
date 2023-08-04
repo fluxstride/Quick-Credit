@@ -17,10 +17,10 @@ let data_table = document.querySelector(".data");
 let data_to_display = data_table && data_table.dataset["table"];
 let data_role = data_table && data_table.dataset["role"];
 let table_data = data[data_to_display];
+
 /**
  *  Password show and hide logic
  */
-
 const password_show_btn = document.querySelector(".password-show");
 const password = document.querySelector(".password input");
 
@@ -52,19 +52,16 @@ go_back_btn?.addEventListener("click", () => {
 });
 
 // Pagination variables
-let active_page = 1,
-  rows_per_page = 10;
+let active_page = 1;
+let rows_per_page = 10;
 
 let table_pagination = document.querySelector(".table-pagination");
+let rows_per_page_element = table_pagination?.querySelector("select");
+let pagination_buttons = table_pagination?.querySelectorAll("button");
+let prev_button = table_pagination?.querySelector("#prev");
+let next_button = table_pagination?.querySelector("#next");
 
-let rows_per_page_elem, pagination_buttons, prev_button, next_button;
-
-rows_per_page_elem = table_pagination?.querySelector("select");
-pagination_buttons = table_pagination?.querySelectorAll("button");
-prev_button = table_pagination?.querySelector("#prev");
-next_button = table_pagination?.querySelector("#next");
-
-rows_per_page_elem?.addEventListener(
+rows_per_page_element?.addEventListener(
   "change",
   (e) => (
     (rows_per_page = e.target.value * 1),
@@ -87,7 +84,6 @@ pagination_buttons?.forEach((button) =>
 let search_input = document.querySelector(".search input");
 
 search_input?.addEventListener("keyup", ({ target: { value } }) => {
-  active_page = 1;
   table_data = data[data_to_display].filter((item) => {
     return (
       item["Email"].toLowerCase().includes(value.toLowerCase()) ||
@@ -95,6 +91,7 @@ search_input?.addEventListener("keyup", ({ target: { value } }) => {
       item["Last Name"].toLowerCase().includes(value.toLowerCase())
     );
   });
+  active_page = 1;
   generateTable(table_data);
 });
 
@@ -103,50 +100,44 @@ search_input?.addEventListener("focus", (e) => {
 });
 
 search_input?.addEventListener("focusout", (e) => {
-  search_input.parentNode.style.border = "2px solid rgb(0, 35, 51, 0.5)";
+  search_input.parentNode.style.border = "2px solid #bfc8cc";
 });
 
 /**
  * Table tabs switching logic
  */
 
+let page_table_tabs = {
+  loans: ["Active", "Paid"],
+  users: ["Unverified", "Verified"],
+  loan_applications: ["Pending", "Approved", "Rejected"],
+};
+let active_table = document.querySelector(".table-tabs")?.dataset["tab"];
+let active_tab = active_table && page_table_tabs[active_table][0];
 let table_tabs = document.querySelector(".table-tabs");
-let active_tab;
+let tabs = table_tabs?.querySelectorAll(".tab");
 
-if (table_tabs) {
-  let page_table_tabs = {
-    loans: ["Active", "Paid"],
-    users: ["Unverified", "Verified"],
-    loan_applications: ["Pending", "Approved", "Rejected"],
-  };
+tabs?.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    if (tab.className.includes("tab--active")) {
+      return;
+    }
 
-  let active_table = document.querySelector(".table-tabs").dataset["tab"];
-  active_tab = page_table_tabs[active_table][0];
+    tab.classList.add("tab--active"), (active_tab = tab.innerText);
 
-  let tabs = table_tabs.querySelectorAll(".tab");
+    tabs.forEach(
+      (tab) =>
+        tab.innerText !== active_tab && tab.classList.remove("tab--active")
+    );
 
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      if (tab.className.includes("tab--active")) {
-        return;
-      }
-
-      tab.classList.add("tab--active"), (active_tab = tab.innerText);
-
-      tabs.forEach(
-        (tab) =>
-          tab.innerText !== active_tab && tab.classList.remove("tab--active")
-      );
-
-      active_page = 1;
-      rows_per_page = 10;
-      rows_per_page_elem.value = 10;
-      table_data = data[data_to_display];
-      search_input && (search_input.value = "");
-      generateTable(table_data);
-    });
+    active_page = 1;
+    rows_per_page = 10;
+    rows_per_page_element.value = 10;
+    table_data = data[data_to_display];
+    search_input && (search_input.value = "");
+    generateTable(table_data);
   });
-}
+});
 
 /**
  * Table generation logic
@@ -180,8 +171,7 @@ function generateTable(table_data) {
       ? (prev_button.style.opacity = ".5")
       : (prev_button.style.opacity = "1");
 
-    next_button.disabled =
-      active_page === Math.ceil((totalPages * rows_per_page) / rows_per_page);
+    next_button.disabled = active_page === totalPages;
     next_button.disabled
       ? (next_button.style.opacity = ".5")
       : (next_button.style.opacity = "1");
@@ -189,6 +179,7 @@ function generateTable(table_data) {
     let page = table_pagination.querySelector(".page");
     page.innerText = `${beginning}-${end} of Page ${active_page}`;
   }
+
   let tr = document.createElement("tr");
   let table_headings = Object.keys(data[data_to_display][0]);
   table_headings.forEach((heading) => {
@@ -210,7 +201,7 @@ function generateTable(table_data) {
 
   thead.append(tr);
 
-  if (table_data.length > 0) {
+  if (table_data.length) {
     calculatedRows.forEach((row) => {
       tr = document.createElement("tr");
       let index = 0;
@@ -287,7 +278,7 @@ function generateTable(table_data) {
             td = ` 
             <td>
               <div class="admin-actions">
-                <div class="admin-action accept">
+                <div class="admin-action post-repayment">
                   <span>Post repayment</span>
                   <img src="./assets/images/check_.svg" alt="" />
                 </div>
@@ -307,3 +298,26 @@ function generateTable(table_data) {
 }
 
 data_table && generateTable(table_data);
+
+// post repayment logic
+const modal_backdrop = document.querySelector(".backdrop");
+const modal_close = document.querySelector(".backdrop .close");
+const post_repayment_btn = document.querySelector(
+  ".admin-actions .post-repayment"
+);
+
+function showModal() {
+  modal_backdrop.style.display = "grid";
+}
+function closeModal() {
+  modal_backdrop.style.display = "none";
+}
+modal_close?.addEventListener("click", closeModal);
+
+modal_backdrop?.addEventListener("click", function (e) {
+  if (e.target === e.currentTarget) {
+    closeModal();
+  }
+});
+
+post_repayment_btn?.addEventListener("click", showModal);
