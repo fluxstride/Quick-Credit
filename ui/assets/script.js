@@ -1,21 +1,7 @@
 import data from "../assets/data.json" assert { type: "json" };
 
-// display data count on admin dashboard
-let users = document.querySelectorAll(".actions .users p")[1];
-users && (users.innerText = data.users.length);
-
-let loan_applications = document.querySelectorAll(
-  ".actions .loan-applications p"
-)[1];
-loan_applications &&
-  (loan_applications.innerText = data.loan_applications.length);
-
-let loans = document.querySelectorAll(".actions .loans p")[1];
-loans && (loans.innerText = data.loans.length);
-
 let data_table = document.querySelector(".data");
 let data_to_display = data_table && data_table.dataset["table"];
-let data_role = data_table && data_table.dataset["role"];
 let table_data = data[data_to_display];
 /**
  *  Password show and hide logic
@@ -24,32 +10,15 @@ let table_data = data[data_to_display];
 const password_show_btn = document.querySelector(".password-show");
 const password = document.querySelector(".password input");
 
-password_show_btn?.addEventListener("click", (e) => {
-  const isHidden = password.type === "password";
-  e.target.src = isHidden
-    ? "./assets/images/eye-off.svg"
-    : "./assets/images/eye-on.svg";
-  password.type = isHidden ? "text" : "password";
-});
-
-// login logic
-let login_form = document.querySelector("form#login");
-login_form?.addEventListener("submit", (e) => {
-  e.preventDefault();
-  let email = e.target.querySelectorAll("input")[0].value;
-  let password = e.target.querySelectorAll("input")[1].value;
-  if (email === "admin@qc.com" && password === "qcadmin")
-    window.location.href = "./admin.html";
-
-  if (email === "user@qc.com" && password === "qcuser")
-    window.location.href = "./user.html";
-});
-
-// go back button logic
-let go_back_btn = document.querySelector(".go-back");
-go_back_btn?.addEventListener("click", () => {
-  history.back();
-});
+if (password_show_btn) {
+  password_show_btn.addEventListener("click", (e) => {
+    const isHidden = password.type === "password";
+    e.target.src = isHidden
+      ? "./assets/images/eye-off.svg"
+      : "./assets/images/eye-on.svg";
+    password.type = isHidden ? "text" : "password";
+  });
+}
 
 // Pagination variables
 let active_page = 1,
@@ -59,52 +28,46 @@ let table_pagination = document.querySelector(".table-pagination");
 
 let rows_per_page_elem, pagination_buttons, prev_button, next_button;
 
-rows_per_page_elem = table_pagination?.querySelector("select");
-pagination_buttons = table_pagination?.querySelectorAll("button");
-prev_button = table_pagination?.querySelector("#prev");
-next_button = table_pagination?.querySelector("#next");
+if (table_pagination) {
+  rows_per_page_elem = table_pagination.querySelector("select");
+  pagination_buttons = table_pagination.querySelectorAll("button");
+  prev_button = table_pagination.querySelector("#prev");
+  next_button = table_pagination.querySelector("#next");
 
-rows_per_page_elem?.addEventListener(
-  "change",
-  (e) => (
-    (rows_per_page = e.target.value * 1),
-    (active_page = 1),
-    generateTable(table_data)
-  )
-);
-
-pagination_buttons?.forEach((button) =>
-  button.addEventListener(
-    "click",
-    () => (
-      button.id === "next" ? (active_page += 1) : (active_page -= 1),
+  rows_per_page_elem.addEventListener(
+    "change",
+    (e) => (
+      (rows_per_page = e.target.value * 1),
+      (active_page = 1),
       generateTable(table_data)
     )
-  )
-);
+  );
+
+  pagination_buttons.forEach((button) =>
+    button.addEventListener(
+      "click",
+      () => (
+        button.id === "next" ? (active_page += 1) : (active_page -= 1),
+        generateTable(table_data)
+      )
+    )
+  );
+}
 
 // Table search logic
 let search_input = document.querySelector(".search input");
-
-search_input?.addEventListener("keyup", ({ target: { value } }) => {
-  active_page = 1;
-  table_data = data[data_to_display].filter((item) => {
-    return (
-      item["Email"].toLowerCase().includes(value.toLowerCase()) ||
-      item["First Name"].toLowerCase().includes(value.toLowerCase()) ||
-      item["Last Name"].toLowerCase().includes(value.toLowerCase())
-    );
+search_input &&
+  search_input.addEventListener("keyup", ({ target: { value } }) => {
+    active_page = 1;
+    table_data = data[data_to_display].filter((item) => {
+      return (
+        item["Email"].toLowerCase().includes(value.toLowerCase()) ||
+        item["First Name"].toLowerCase().includes(value.toLowerCase()) ||
+        item["Last Name"].toLowerCase().includes(value.toLowerCase())
+      );
+    });
+    generateTable(table_data);
   });
-  generateTable(table_data);
-});
-
-search_input?.addEventListener("focus", (e) => {
-  search_input.parentElement.style.border = "2px solid var(--lemon-green)";
-});
-
-search_input?.addEventListener("focusout", (e) => {
-  search_input.parentNode.style.border = "2px solid rgb(0, 35, 51, 0.5)";
-});
 
 /**
  * Table tabs switching logic
@@ -159,7 +122,9 @@ function generateTable(table_data) {
   // clear the existing table data
   (thead.innerHTML = ""), (tbody.innerHTML = "");
 
-  table_data = table_data?.filter((data) => data["Status"] === active_tab);
+  if (table_tabs) {
+    table_data = table_data.filter((data) => data["Status"] === active_tab);
+  }
 
   let dataCount = table_data.length;
   let totalPages = Math.ceil(dataCount / rows_per_page);
@@ -176,15 +141,9 @@ function generateTable(table_data) {
 
   if (table_pagination.style.visibility === "visible") {
     prev_button.disabled = active_page === 1;
-    prev_button.disabled
-      ? (prev_button.style.opacity = ".5")
-      : (prev_button.style.opacity = "1");
 
     next_button.disabled =
       active_page === Math.ceil((totalPages * rows_per_page) / rows_per_page);
-    next_button.disabled
-      ? (next_button.style.opacity = ".5")
-      : (next_button.style.opacity = "1");
 
     let page = table_pagination.querySelector(".page");
     page.innerText = `${beginning}-${end} of Page ${active_page}`;
@@ -221,7 +180,7 @@ function generateTable(table_data) {
 
         if (index === Object.keys(row).length - 1) {
           if (data_to_display === "loans") {
-            td = `<td style="width:20ch"><a href="./repayment-history.html">repayment history</a></td>`;
+            td = `<td style="width:20ch"><a href="">repayment history</a></td>`;
             tr.innerHTML += td;
           }
 
@@ -271,25 +230,6 @@ function generateTable(table_data) {
                 <div class="admin-action decline">
                   <span>Reject</span>
                   <img src="./assets/images/model_x.svg" alt="" />
-                </div>
-              </div>
-            </td>
-            `;
-
-            tr.innerHTML += td;
-          }
-
-          if (
-            data_to_display === "loans" &&
-            data_role === "admin" &&
-            active_tab === "Active"
-          ) {
-            td = ` 
-            <td>
-              <div class="admin-actions">
-                <div class="admin-action accept">
-                  <span>Post repayment</span>
-                  <img src="./assets/images/check_.svg" alt="" />
                 </div>
               </div>
             </td>
