@@ -13,6 +13,20 @@
       "Date": "24/05/2023"
     }
   ],
+  "available_loans": [
+    {
+      "amount": 500000,
+      "interest-rate": "5%"
+    },
+    {
+      "amount": 100000,
+      "interest-rate": "5%"
+    },
+    {
+      "amount": 1500000,
+      "interest-rate": "5%"
+    }
+  ],
   "loans": [
     {
       "Loan ID": 1,

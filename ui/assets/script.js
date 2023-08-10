@@ -51,6 +51,16 @@ go_back_btn?.addEventListener("click", () => {
   history.back();
 });
 
+// request loan
+let loan_request_form = document.querySelector("#request-loan > form");
+
+loan_request_form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  let loan_amount = loan_request_form.querySelectorAll("select")[0].value;
+  let loan_tenor = loan_request_form.querySelectorAll("select")[1].value;
+  let reason = loan_request_form.querySelector("textarea").value;
+});
+
 // Pagination variables
 let active_page = 1;
 let rows_per_page = 10;
