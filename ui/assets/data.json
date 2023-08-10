@@ -2,12 +2,14 @@
   "application_history": [
     {
       "Amount": 500000,
+      "Interst rate": "5%",
       "Tenor": "12 months",
       "Status": "Approved",
       "Date": "24/05/2023"
     },
     {
       "Amount": 500000,
+      "Interst rate": "5%",
       "Tenor": "12 months",
       "Status": "Approved",
       "Date": "24/05/2023"
