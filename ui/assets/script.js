@@ -51,16 +51,6 @@ go_back_btn?.addEventListener("click", () => {
   history.back();
 });
 
-// request loan
-let loan_request_form = document.querySelector("#request-loan > form");
-
-loan_request_form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  let loan_amount = loan_request_form.querySelectorAll("select")[0].value;
-  let loan_tenor = loan_request_form.querySelectorAll("select")[1].value;
-  let reason = loan_request_form.querySelector("textarea").value;
-});
-
 // Pagination variables
 let active_page = 1;
 let rows_per_page = 10;
@@ -333,3 +323,17 @@ modal_backdrop?.addEventListener("click", function (e) {
 });
 
 post_repayment_btn?.addEventListener("click", showModal);
+
+// request loan
+let loan_request_form = document.querySelector("#request-loan > form");
+
+loan_request_form?.addEventListener("submit", (e) => {
+  e.preventDefault();
+  let loan_amount = loan_request_form.querySelectorAll("select")[0];
+  let loan_tenor = loan_request_form.querySelectorAll("select")[1];
+  let reason = loan_request_form.querySelector("textarea");
+  showModal();
+  loan_amount.value = "";
+  loan_tenor.value = "";
+  reason.value = "";
+});
