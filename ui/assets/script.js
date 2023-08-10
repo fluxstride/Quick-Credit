@@ -109,7 +109,7 @@ search_input?.addEventListener("focusout", (e) => {
 
 let page_table_tabs = {
   loans: ["Active", "Paid"],
-  users: ["Unverified", "Verified"],
+  users: ["All", "Unverified", "Verified"],
   loan_applications: ["Pending", "Approved", "Rejected"],
 };
 let active_table = document.querySelector(".table-tabs")?.dataset["tab"];
@@ -151,7 +151,9 @@ function generateTable(table_data) {
   (thead.innerHTML = ""), (tbody.innerHTML = "");
 
   if (active_tab) {
-    table_data = table_data?.filter((data) => data["Status"] === active_tab);
+    if (!active_tab === "All") {
+      table_data = table_data?.filter((data) => data["Status"] === active_tab);
+    }
   }
 
   let dataCount = table_data.length;
@@ -208,7 +210,7 @@ function generateTable(table_data) {
       tr = document.createElement("tr");
       let index = 0;
 
-      for (let [, value] of Object.entries(row)) {
+      for (let [key, value] of Object.entries(row)) {
         let td = `<td>${value}</td>`;
         tr.innerHTML += td;
 
@@ -219,7 +221,43 @@ function generateTable(table_data) {
           }
 
           if (data_to_display === "users") {
+            if (active_tab === "All") {
+              if (row.Status === "Unverified") {
+                td = `
+                <td>
+                  <div class="admin-actions">
+                    <div class="admin-action accept">
+                      <span>Verify</span>
+                      <img src="./assets/images/check_.svg" alt="" />
+                    </div>
+                    <div class="admin-action decline">
+                      <span>Decline</span>
+                      <img src="./assets/images/model_x.svg" alt="" />
+                    </div>
+                  </div>
+                </td>
+                `;
+              } else if (row.Status === "Verified") {
+                td = `
+                <td>
+                  <div class="admin-actions" >
+                    <div class="admin-action decline">
+                      <span>Revert</span>
+                      <img src="./assets/images/model_x.svg" alt="" />
+                    </div>
+                  </div>
+                </td>
+                `;
+              }
+
+              tr.innerHTML += td;
+              tbody.append(tr);
+
+              return;
+            }
+
             if (active_tab === "Unverified") {
+              console.log(value);
               td = ` 
             <td>
               <div class="admin-actions">
