@@ -34,13 +34,23 @@
         <h1 class="title">Request Loan</h1>
 
         <div class="form-container" id="request-loan">
-          <form id="" class="">
-            <input type="text" placeholder="Loan Amount" />
-            <select name="" id="">
-              <option value="">6 months</option>
-              <option value="">12 months</option>
+          <form>
+            <select name="loan-amount" id="" required>
+              <option value="">Select loan amount</option>
+              <option value="500000">500,000 - 5% interest rate</option>
+              <option value="1000000">1,000,000 - 5% interest rate</option>
             </select>
-            <textarea rows="5" placeholder="Reason for request"></textarea>
+            <select name="loan-tenor" id="" required>
+              <option value="">Select loan tenor</option>
+              <option value="6 months">6 months</option>
+              <option value="12 months">12 months</option>
+            </select>
+            <textarea
+              rows="5"
+              placeholder="Reason for request"
+              name="reason"
+              required
+            ></textarea>
             <input type="submit" value="Apply" />
           </form>
         </div>
