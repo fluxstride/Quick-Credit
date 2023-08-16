@@ -1,0 +1,46 @@
+Arguments: 
+  /usr/bin/node /usr/bin/yarn add json-server
+
+PATH: 
+  /home/fluxstride/.vscode-server/bin/6445d93c81ebe42c4cbd7a60712e0b17d9463e97/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files (x86)/Common Files/Intel/Shared Libraries/redist/intel64/compiler:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/GitHub CLI/:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/c/Program Files/dotnet/:/mnt/c/FPC/3.2.2/bin/i386-Win32:/mnt/c/Users/HP/.console-ninja/.bin:/mnt/c/Users/HP/AppData/Local/Programs/Python/Python310/Scripts/:/mnt/c/Users/HP/AppData/Local/Programs/Python/Python310/:/mnt/c/Users/HP/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/HP/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/HP/Documents/softwares/node-v18.0.0-win-x64:/mnt/c/Program Files/heroku/bin:/mnt/c/Users/HP/AppData/Local/Android/Sdk/platform-tools:/mnt/c/Program Files/MongoDB/Server/4.4/bin:/mnt/c/Program Files/PostgreSQL/14/bin:/mnt/c/Users/HP/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/JetBrains/IntelliJ IDEA 2022.1/bin:/mnt/c/Users/HP/Documents/softwares/jdk-19_windows-x64_bin/jdk-19.0.2/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.12.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: getaddrinfo EAI_AGAIN registry.yarnpkg.com
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:107:26)
+
+npm manifest: 
+  {
+    "name": "quick_credit",
+    "version": "1.0.0",
+    "description": "Quick Credit is an online lending platform that provides short term soft loans to individuals. This helps solve problems of financial inclusion as a way to alleviate poverty and empower low income earners.",
+    "main": "mockserver.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/fluxstride/Quick-Credit.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/fluxstride/Quick-Credit/issues"
+    },
+    "homepage": "https://github.com/fluxstride/Quick-Credit#readme"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
