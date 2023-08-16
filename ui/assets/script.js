@@ -150,10 +150,8 @@ function generateTable(table_data) {
   // clear the existing table data
   (thead.innerHTML = ""), (tbody.innerHTML = "");
 
-  if (active_tab) {
-    if (!active_tab === "All") {
-      table_data = table_data?.filter((data) => data["Status"] === active_tab);
-    }
+  if (active_tab && !(active_tab === "All")) {
+    table_data = table_data?.filter((data) => data["Status"] === active_tab);
   }
 
   let dataCount = table_data.length;
@@ -210,7 +208,7 @@ function generateTable(table_data) {
       tr = document.createElement("tr");
       let index = 0;
 
-      for (let [key, value] of Object.entries(row)) {
+      for (let [, value] of Object.entries(row)) {
         let td = `<td>${value}</td>`;
         tr.innerHTML += td;
 
@@ -261,7 +259,7 @@ function generateTable(table_data) {
               td = ` 
             <td>
               <div class="admin-actions">
-                <div class="admin-action accept">
+                <div class="admin-action accept verify-user">
                   <span>Verify</span>
                   <img src="./assets/images/check_.svg" alt="" />
                 </div>
@@ -326,7 +324,7 @@ function generateTable(table_data) {
             </td>
             `;
 
-            tr.innerHTML += td;
+            tr.insertAdjacentHTML("beforeend", td);
           }
         }
         index++;
@@ -335,23 +333,36 @@ function generateTable(table_data) {
       tbody.append(tr);
     });
   }
+
+  activate_modal_listeners();
 }
 
 data_table && generateTable(table_data);
 
-// post repayment logic
-const modal_backdrop = document.querySelector(".backdrop");
-const modal_close = document.querySelector(".backdrop .close");
-const post_repayment_btn = document.querySelector(
-  ".admin-actions .post-repayment"
+// modals logic
+let modal_backdrop = document.querySelector(".backdrop");
+const loan_application_success_modal = document.querySelector(
+  "#loan-application-success"
 );
+const post_repayment_modal = document.querySelector("#post-repayment-modal");
+const verify_user_modal = document.querySelector("#verify-user");
 
-function showModal() {
-  modal_backdrop.style.display = "grid";
+let modals = {
+  loan_application_success: loan_application_success_modal,
+  post_repayment: post_repayment_modal,
+  verify_user: verify_user_modal,
+};
+
+const modal_close = document.querySelector(".backdrop .close");
+
+function showModal(modal_to_show, modals) {
+  modals[modal_to_show].style.display = "grid";
 }
+
 function closeModal() {
   modal_backdrop.style.display = "none";
 }
+
 modal_close?.addEventListener("click", closeModal);
 
 modal_backdrop?.addEventListener("click", function (e) {
@@ -360,7 +371,23 @@ modal_backdrop?.addEventListener("click", function (e) {
   }
 });
 
-post_repayment_btn?.addEventListener("click", showModal);
+function activate_modal_listeners() {
+  // post repayment logic
+  const post_repayment_btn = document.querySelector(
+    ".admin-actions > .post-repayment"
+  );
+  post_repayment_btn?.addEventListener("click", function () {
+    showModal("post_repayment", modals);
+  });
+
+  // verify user logic
+  const verify_user_btns = document.querySelectorAll(".verify-user");
+  verify_user_btns?.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      showModal("verify_user", modals);
+    });
+  });
+}
 
 // request loan
 let loan_request_form = document.querySelector("#request-loan > form");
@@ -370,7 +397,7 @@ loan_request_form?.addEventListener("submit", (e) => {
   let loan_amount = loan_request_form.querySelectorAll("select")[0];
   let loan_tenor = loan_request_form.querySelectorAll("select")[1];
   let reason = loan_request_form.querySelector("textarea");
-  showModal();
+  showModal("loan_application_success", modals);
   loan_amount.value = "";
   loan_tenor.value = "";
   reason.value = "";

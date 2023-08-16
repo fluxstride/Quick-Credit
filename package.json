@@ -1,0 +1,24 @@
+{
+  "name": "quick_credit",
+  "version": "1.0.0",
+  "description": "Quick Credit is an online lending platform that provides short term soft loans to individuals. This helps solve problems of financial inclusion as a way to alleviate poverty and empower low income earners.",
+  "main": "mockserver.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node mockserver.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fluxstride/Quick-Credit.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fluxstride/Quick-Credit/issues"
+  },
+  "homepage": "https://github.com/fluxstride/Quick-Credit#readme",
+  "dependencies": {
+    "json-server": "^0.17.3"
+  }
+}
