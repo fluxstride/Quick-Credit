@@ -1,4 +1,4 @@
-let url = new URL("http://127.0.0.1:3000/");
+let url = new URL("https://qc-ctdn.onrender.com/");
 
 export function confirmAction(user, type) {
   let linkPath;
