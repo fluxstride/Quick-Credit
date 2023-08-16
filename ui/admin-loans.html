@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./assets/styles.css" />
-    <script defer type="module" src="./assets/script.js"></script>
+    <script defer type="module" src="./assets/js/app.js"></script>
     <title>Quick Credit | Active Loans</title>
   </head>
   <body>
@@ -31,56 +31,35 @@
           <img src="./assets/images/chevron_left.svg" alt="" />
           <span> Go back </span>
         </div>
-        <h1 class="title">Loans</h1>
-        <div class="table-tabs" data-tab="loans">
-          <div class="tab tab--active">Active</div>
-          <div class="tab">Paid</div>
+
+        <div class="data" data-to-display="admin-loans">
+          <h1 class="title">Loans</h1>
+          <div class="table-head"></div>
+          <div class="table-container"></div>
+          <div class="table-pagination"></div>
         </div>
-        <div class="data" data-table="loans" data-role="admin">
-          <div class="table-container">
-            <table>
-              <thead>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
-          </div>
-          <div class="table-pagination">
-            <span class="page">1 - 10 of Page 1 </span>
-            <span class="right">
-              <span>
-                <span> Rows per page: </span>
-                <select name="" id="">
-                  <option value="10">10</option>
-                  <option value="5">5</option>
-                </select>
-              </span>
-              <span>
-                <button id="prev">Previous</button>
-                <button id="next">Next</button>
-              </span>
-            </span>
-          </div>
-    </main>
-    <div class="backdrop" >
-        <div class="modal">
-          <div class="header">
-            <div class="title">
-              <img src="./assets/images/loan_details.svg" alt="" />
-              <h3>Post Repayment</h3>
-            </div>
-            <div class="close" >
-              <img src="./assets/images/cross.svg" alt="" />
-            </div>
-          </div>
-          <div class="body">
-            <div class="form-container" id="post-repayment">
-              <form id="" class="">
-                <input type="text" placeholder="Amount" />
-                <input type="submit" value="Post" />
-              </form>
-            </div>
-          </div>
       </div>
+    </main>
+    <!-- <div class="modal" id="post-repayment-modal">
+      <div class="content">
+        <div class="header">
+          <div class="title">
+            <img src="./assets/images/loan_details.svg" alt="" />
+            <h3>Post Repayment</h3>
+          </div>
+          <div class="close">
+            <img src="./assets/images/cross.svg" alt="" />
+          </div>
+        </div>
+        <div class="body">
+          <div class="form-container" id="post-repayment">
+            <form id="" class="">
+              <input type="text" placeholder="Amount" />
+              <input type="submit" value="Post" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div> -->
   </body>
 </html>

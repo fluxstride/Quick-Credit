@@ -33,27 +33,27 @@
           <span> Go back </span>
         </div>
 
-        <h1 class="title">Request Loan</h1>
+        <h1 class="title">Create loan offer</h1>
 
-        <div class="form-container" id="request-loan">
+        <div class="form-container" id="create-loan-offer">
           <form>
-            <select name="loan-offer" id="loan-offers" required>
-              <option value="">Select loan offer</option>
+            <input name="amount" id="" placeholder="Amount" required />
+            <select name="interestRate" id="" required>
+              <option value="">Select interest rate</option>
+              <option value="5%">5%</option>
+              <option value="10%">10%</option>
             </select>
-
-            <textarea
-              rows="5"
-              placeholder="Reason for request"
-              name="reason"
-              required
-            ></textarea>
-            <input type="submit" value="Apply" />
+            <select name="tenor" id="" required>
+              <option value="">Select loan tenor</option>
+              <option value="6 months">6 months</option>
+              <option value="12 months">12 months</option>
+            </select>
+            <input type="submit" value="Create" />
           </form>
         </div>
 
-        <div class="data" data-to-display="loan-application-history">
-          <h1 class="title">Application History</h1>
-          <div class="table-head"></div>
+        <div class="data" data-to-display="loan-offers">
+          <h1 class="title">Loan Offers</h1>
           <div class="table-container"></div>
           <div class="table-pagination"></div>
         </div>
