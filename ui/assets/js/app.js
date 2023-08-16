@@ -7,7 +7,7 @@ const dataContainer = document.querySelector(".data");
 const tableToDisplay =
   dataContainer && dataContainer.getAttribute("data-to-display");
 
-let url = new URL(`http://127.0.0.1:3000/db`);
+let url = new URL(`https://qc-ctdn.onrender.com/db`);
 fetch(url)
   .then((res) => res.json())
   .then((data) => {
