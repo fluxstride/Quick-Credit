@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./assets/styles.css" />
-    <script defer type="module" src="./assets/script.js"></script>
+    <script defer type="module" src="./assets/js/app.js"></script>
     <title>Quick Credit | Loan Applications</title>
   </head>
   <body>
@@ -31,43 +31,14 @@
           <img src="./assets/images/chevron_left.svg" alt="" />
           <span> Go back </span>
         </div>
-        <h1 class="title">Loan Applications</h1>
-        <div class="table-head">
-          <span class="table-tabs" data-tab="loan_applications">
-            <div class="tab tab--active">Pending</div>
-            <div class="tab">Approved</div>
-            <div class="tab">Rejected</div>
-          </span>
-          <span class="search">
-            <img src="./assets/images/search.svg" alt="">
-            <input type="text" placeholder="Search">
-          </span>
+
+        <div class="data" data-to-display="loan-applications">
+          <h1 class="title">Loan Applications</h1>
+          <div class="table-head"></div>
+          <div class="table-container"></div>
+          <div class="table-pagination"></div>
         </div>
-        <div class="data" data-table="loan_applications">
-          <div class="table-container">
-            <table>
-              <thead>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
-          </div>
-          <div class="table-pagination">
-            <span class="page">1 - 10 of Page 1 </span>
-            <span class="right">
-              <span>
-                <span> Rows per page: </span>
-                <select name="" id="">
-                  <option value="10">10</option>
-                  <option value="5">5</option>
-                </select>
-              </span>
-              <span>
-                <button id="prev">Previous</button>
-                <button id="next">Next</button>
-              </span>
-            </span>
-          </div>
+      </div>
     </main>
   </body>
 </html>
