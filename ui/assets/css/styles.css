@@ -38,6 +38,7 @@ a {
   padding-inline: 1.6rem;
   max-width: 1536px;
   margin-inline: auto;
+  overflow-y: auto;
 }
 
 @media (min-width: 1280px) and (max-width: 1600px) {
@@ -114,6 +115,37 @@ nav#dashboard .nav-right span {
   }
 }
 /*  */
+
+.page-navigation {
+  background-color: var(--lemon-green);
+  padding-block: 0.5rem;
+}
+
+.page-navigation ul {
+  display: flex;
+  list-style-type: none;
+  gap: 1rem;
+  min-width: max-content;
+
+  & a {
+    display: block;
+    padding: 0.5rem 1rem;
+    font-size: 1.6rem;
+    color: #fff;
+    transition: background-color 300ms ease-in-out;
+    border-radius: 0.4rem;
+
+    &:hover {
+      background-color: #fff;
+      color: var(--lemon-green);
+    }
+  }
+
+  & > li.active > a {
+    background-color: #fff;
+    color: var(--lemon-green);
+  }
+}
 
 /* Landing page  */
 .hero {
@@ -349,6 +381,7 @@ input::placeholder {
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
+  border-radius: 1rem;
 }
 
 .dashboard .actions p {
@@ -393,6 +426,7 @@ input::placeholder {
 
 .table-tabs {
   display: flex;
+  overflow: hidden;
 }
 
 .table-tabs .tab {
@@ -450,7 +484,7 @@ input::placeholder {
 .data tr,
 .data th,
 .data td {
-  border: 2px solid #bfc8cc !important;
+  border: 2px solid #bfc8cc;
   cursor: auto;
 }
 
@@ -458,13 +492,7 @@ input::placeholder {
   background-color: var(--lemon-green-overlay);
 }
 
-/* .data tr:hover {
-  background-color: var(--lemon-green-overlay) !important;
-  border: 2px solid #fff !important;
-  transition: all 300ms ease-in-out;
-} */
 .table-pagination {
-  /* visibility: hidden; */
   margin: 1.6rem 0 10rem;
   display: flex;
   justify-content: space-between;
@@ -687,4 +715,33 @@ input::placeholder {
   padding: 0.5rem 1rem;
   cursor: pointer;
   margin-left: 2rem;
+}
+
+.custom-loader {
+  width: 40px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(farthest-side, #159a9c 94%, #0000) top/8px 8px
+      no-repeat,
+    conic-gradient(#0000 30%, #159a9c);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 7px), #000 0);
+  animation: s3 1s infinite linear;
+
+  &.admin-dashboard {
+    -webkit-mask: radial-gradient(
+      farthest-side,
+      #0000 calc(100% - 4px),
+      #000 0
+    );
+    background: radial-gradient(farthest-side, #fff 94%, #0000) top/8px 8px
+        no-repeat,
+      conic-gradient(#0000 30%, #fff);
+    width: 25px;
+  }
+}
+
+@keyframes s3 {
+  100% {
+    transform: rotate(1turn);
+  }
 }
