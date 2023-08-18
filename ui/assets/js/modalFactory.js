@@ -139,7 +139,6 @@ class PostRepayment extends Modal {
       submitButton.disabled = true;
 
       let repayment = {
-        id: "new",
         amount,
         date: "5/24/2023",
       };
