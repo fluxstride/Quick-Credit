@@ -127,24 +127,29 @@ nav#dashboard .nav-right span {
   gap: 1rem;
   min-width: max-content;
 
-  & a {
-    display: block;
-    padding: 0.5rem 1rem;
-    font-size: 1.6rem;
-    color: #fff;
-    transition: background-color 300ms ease-in-out;
-    border-radius: 0.4rem;
-
-    &:hover {
-      background-color: #fff;
-      color: var(--lemon-green);
-    }
-  }
-
   & > li.active > a {
     background-color: #fff;
     color: var(--lemon-green);
   }
+}
+
+.page-navigation a {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 1.6rem;
+  color: #fff;
+  transition: background-color 300ms ease-in-out;
+  border-radius: 0.4rem;
+}
+
+.page-navigation a:hover {
+  background-color: #fff;
+  color: var(--lemon-green);
+}
+
+.page-navigation li.active > a {
+  background-color: #fff;
+  color: var(--lemon-green);
 }
 
 /* Landing page  */
@@ -726,18 +731,14 @@ input::placeholder {
     conic-gradient(#0000 30%, #159a9c);
   -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 7px), #000 0);
   animation: s3 1s infinite linear;
+}
 
-  &.admin-dashboard {
-    -webkit-mask: radial-gradient(
-      farthest-side,
-      #0000 calc(100% - 4px),
-      #000 0
-    );
-    background: radial-gradient(farthest-side, #fff 94%, #0000) top/8px 8px
-        no-repeat,
-      conic-gradient(#0000 30%, #fff);
-    width: 25px;
-  }
+.custom-loader.admin-dashboard {
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 4px), #000 0);
+  background: radial-gradient(farthest-side, #fff 94%, #0000) top/8px 8px
+      no-repeat,
+    conic-gradient(#0000 30%, #fff);
+  width: 25px;
 }
 
 @keyframes s3 {
