@@ -6,8 +6,14 @@ const dataContainer = document.querySelector(".data");
 const tableToDisplay =
   dataContainer && dataContainer.getAttribute("data-to-display");
 
+let loaders = document.querySelectorAll(".custom-loader");
+
 API.fetchTableData()
   .then((data) => {
+    loaders.forEach((loader) => {
+      loader.remove();
+    });
+
     tableToDisplay && createAdminTable(tableToDisplay, data[tableToDisplay]);
 
     // display data count on admin dashboard
@@ -27,9 +33,13 @@ API.fetchTableData()
     loanOffers && (loanOffers.innerText = data["loan-offers"].length);
   })
   .catch((err) => {
+    loaders.forEach((loader) => {
+      loader.remove();
+    });
+
     let errorMessage = document.createElement("p");
-    errorMessage.innerText = err.message;
-    dataContainer?.append(errorMessage);
+    errorMessage.innerText = err;
+    dataContainer?.prepend(errorMessage);
 
     console.log(err);
   });

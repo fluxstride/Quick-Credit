@@ -29,15 +29,24 @@
         </div>
       </div>
     </nav>
+    <div class="page-navigation">
+      <div class="container">
+        <ul>
+          <li><a href="admin.html">Dashboard</a></li>
+          <li><a href="users.html">Users</a></li>
+          <li class="active">
+            <a href="loan-applications.html">Loan applications</a>
+          </li>
+          <li><a href="admin-loans.html">Loans</a></li>
+          <li><a href="loan-offers.html">Loan offers</a></li>
+        </ul>
+      </div>
+    </div>
     <main class="container">
       <div class="dashboard">
-        <div class="go-back">
-          <img src="./assets/images/chevron_left.svg" alt="go back" />
-          <span> Go back </span>
-        </div>
-
+        <h1 class="title">Loan Applications</h1>
         <div class="data" data-to-display="loan-applications">
-          <h1 class="title">Loan Applications</h1>
+          <div class="custom-loader"></div>
           <div class="table-head"></div>
           <div class="table-container"></div>
           <div class="table-pagination"></div>

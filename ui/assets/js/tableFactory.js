@@ -630,7 +630,7 @@ class AdminLoansTable extends Table {
   }
 
   getAdminAction(loan) {
-    let html = `
+    let element = `
     <div class="admin-actions">
       <div class="admin-action post-repayment">
         <span>Post repayment</span>
@@ -638,7 +638,7 @@ class AdminLoansTable extends Table {
       </div>
     </div>
     `;
-    let adminAction = range.createContextualFragment(html).children[0];
+    let adminAction = this.createElementFromString(element);
     let repaymentBtn = adminAction.children[0];
 
     repaymentBtn.addEventListener("click", () => {
