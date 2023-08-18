@@ -1661,9 +1661,9 @@
       "date": "5/24/2023"
     },
     {
-      "id": "new",
       "amount": "43750",
-      "date": "5/24/2023"
+      "date": "5/24/2023",
+      "id": "EC1U0vs"
     }
   ],
   "users": [
@@ -1676,7 +1676,7 @@
       "email": "nyoseloff0@psu.edu",
       "homeAddress": "6707 Bartelt Circle",
       "workAddress": "53 Moland Drive",
-      "status": "Verified"
+      "status": "Unverified"
     },
     {
       "id": "SbNgRU",
@@ -2779,7 +2779,7 @@
       "phoneNumber": "250-571-5446",
       "homeAddress": "3346 Derek Hill",
       "workAddress": "8774 Hoffman Lane",
-      "status": "Pending"
+      "status": "Approved"
     },
     {
       "id": "S3A4uT",
@@ -2851,7 +2851,7 @@
       "phoneNumber": "458-182-8732",
       "homeAddress": "8203 Amoth Parkway",
       "workAddress": "0288 Kings Lane",
-      "status": "Pending"
+      "status": "Rejected"
     },
     {
       "id": "kQ7A9n",
@@ -2923,7 +2923,7 @@
       "phoneNumber": "810-180-7957",
       "homeAddress": "26 Northfield Avenue",
       "workAddress": "422 Hazelcrest Avenue",
-      "status": "Pending"
+      "status": "Approved"
     },
     {
       "id": "r0M9EF",
@@ -5074,28 +5074,22 @@
   ],
   "loan-offers": [
     {
-      "amount": "50000",
+      "amount": "400000",
+      "interestRate": "10%",
+      "tenor": "6 months",
+      "id": "_DtqmP1"
+    },
+    {
+      "amount": "2222222",
       "interestRate": "5%",
       "tenor": "12 months",
-      "id": 1
-    },
-    {
-      "amount": "4000000000000",
-      "interestRate": "10%",
-      "tenor": "6 months",
-      "id": 2
-    },
-    {
-      "amount": "100000",
-      "interestRate": "10%",
-      "tenor": "6 months",
-      "id": 3
+      "id": "fpmhmiD"
     },
     {
       "amount": "50000",
-      "interestRate": "10%",
+      "interestRate": "5%",
       "tenor": "6 months",
-      "id": 4
+      "id": "FIr083a"
     }
   ]
 }

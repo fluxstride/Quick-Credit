@@ -1,4 +1,9 @@
-let url = new URL("http://127.0.0.1:3000/");
+let baseUrl = new URL("http://localhost:4000/");
+
+export async function fetchTableData() {
+  let response = await fetch(baseUrl + "db");
+  return response.json();
+}
 
 export function confirmAction(user, type) {
   let linkPath;
@@ -24,7 +29,7 @@ export function confirmAction(user, type) {
       break;
   }
 
-  return fetch(url + linkPath, {
+  return fetch(baseUrl + linkPath, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -34,7 +39,7 @@ export function confirmAction(user, type) {
 }
 
 export function postRepayment(repayment) {
-  return fetch(url + "repayment-history", {
+  return fetch(baseUrl + "repayment-history", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -44,7 +49,7 @@ export function postRepayment(repayment) {
 }
 
 export function createLoanOffer(offer) {
-  return fetch(url + "loan-offers", {
+  return fetch(baseUrl + "loan-offers", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -53,11 +58,14 @@ export function createLoanOffer(offer) {
   });
 }
 
-export function getLoanOffers() {
-  return fetch(url + "loan-offers");
+export async function getLoanOffers() {
+  let response = await fetch(baseUrl + "loan-offers");
+  if (response.ok) return response.json();
+  throw new Error("Status code error :" + res.status);
 }
+
 export function editLoanOffer(id, data) {
-  return fetch(url + "loan-offers/" + id, {
+  return fetch(baseUrl + "loan-offers/" + id, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -65,8 +73,9 @@ export function editLoanOffer(id, data) {
     body: JSON.stringify({ ...data }),
   });
 }
+
 export function deleteLoanOffer(id) {
-  return fetch(url + "loan-offers/" + id, {
+  return fetch(baseUrl + "loan-offers/" + id, {
     method: "DELETE",
   });
 }
