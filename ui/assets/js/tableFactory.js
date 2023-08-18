@@ -1,5 +1,4 @@
 import modals from "./modalFactory.js";
-import * as API from "./api.js";
 
 class Table {
   constructor(data, itemsPerPage = 10) {
@@ -10,52 +9,81 @@ class Table {
     this.tableData = data;
     this.calculateTableData();
     this.render();
-    let tablePagination = document.querySelector(".table-pagination");
-    let tableContainer = document.querySelector(".table-container");
+
+    const tablePagination = document.querySelector(".table-pagination");
+    const tableContainer = document.querySelector(".table-container");
     tablePagination.style.display =
       this.dataCount > this.itemsPerPage ? "flex" : "none";
     tableContainer.style.marginBottom =
       this.dataCount > this.itemsPerPage ? "0" : "10rem";
   }
 
+  createElementFromString(elementString) {
+    let range = document.createRange();
+    return range.createContextualFragment(elementString).children[0];
+  }
+
+  calculateTableData() {
+    this.tabData =
+      this.currentTab === this.getTabs()[0]
+        ? this.tableData
+        : this.tableData.filter((row) => row.status === this.currentTab);
+    this.startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    this.endIndex = this.startIndex + this.itemsPerPage;
+
+    if (this.getTabs()[0]) {
+      this.currentPageData = this.tabData.slice(this.startIndex, this.endIndex);
+      this.dataCount = this.tabData.length;
+    } else {
+      this.currentPageData = this.data.slice(this.startIndex, this.endIndex);
+      this.dataCount = this.data.length;
+    }
+
+    this.pageBeginning =
+      this.currentPage === 1
+        ? 1
+        : this.itemsPerPage * (this.currentPage - 1) + 1;
+    this.pageEnding =
+      this.currentPage === this.totalPages
+        ? this.dataCount
+        : this.pageBeginning + this.itemsPerPage - 1;
+    this.pageInfo = `${this.pageBeginning} - ${this.pageEnding} of Page ${this.currentPage}`;
+    this.totalPages = Math.ceil(this.dataCount / this.itemsPerPage);
+  }
+
   calculatePaginationButtonsState() {
-    this.prev_button = document.querySelector("#prev");
-    this.next_button = document.querySelector("#next");
-    this.prev_button.disabled = this.currentPage === 1;
-    this.prev_button.disabled
-      ? (this.prev_button.style.opacity = ".5")
-      : (this.prev_button.style.opacity = "1");
+    const prev_button = document.querySelector("#prev");
+    const next_button = document.querySelector("#next");
 
-    this.next_button.disabled = this.currentPage === this.totalPages;
-    this.next_button.disabled
-      ? (this.next_button.style.opacity = ".5")
-      : (this.next_button.style.opacity = "1");
-  }
+    prev_button.disabled = this.currentPage === 1;
+    prev_button.disabled
+      ? ((prev_button.style.opacity = ".1"),
+        (prev_button.style.cursor = "not-allowed"))
+      : ((prev_button.style.opacity = "1"),
+        (prev_button.style.cursor = "pointer"));
 
-  dropTable() {
-    const table = document.querySelector("table");
-    table.remove();
-  }
-
-  clearSearchInput() {
-    const searchInput = document.querySelector(".search input");
-    searchInput && (searchInput.value = "");
+    next_button.disabled = this.currentPage === this.totalPages;
+    next_button.disabled
+      ? ((next_button.style.opacity = ".1"),
+        (next_button.style.cursor = "not-allowed"))
+      : ((next_button.style.opacity = "1"),
+        (next_button.style.cursor = "pointer"));
   }
 
   renderTabs() {
-    let tableTabs = document.createElement("div");
+    const tableTabs = document.createElement("div");
     tableTabs.classList.add("table-tabs");
 
     for (const tab of this.getTabs()) {
       const tabButton = document.createElement("div");
-      let classNames =
+      const classNames =
         tab === this.currentTab ? ["tab", "tab--active"] : ["tab"];
       tabButton.classList.add(...classNames);
       tabButton.textContent = tab;
       tableTabs.appendChild(tabButton);
     }
 
-    let tabs = tableTabs.querySelectorAll(".tab");
+    const tabs = tableTabs.childNodes;
     tabs.forEach((tab) => {
       tab.addEventListener("click", (e) => {
         if (tab.className.includes("tab--active")) return;
@@ -74,15 +102,17 @@ class Table {
   }
 
   renderSearch() {
-    let searchBox = document.createElement("div");
-    searchBox.classList.add("search");
-    let icon = document.createElement("img");
-    icon.setAttribute("src", "./assets/images/search.svg");
-    let input = document.createElement("input");
-    input.setAttribute("type", "text");
-    input.setAttribute("placeholder", "Search");
+    let element = `
+      <div class="search">
+        <img src="./assets/images/search.svg" alt="search icon" />
+        <input type="text" placeholder="Search"/>
+      </div>
+    `;
+
+    const searchBox = this.createElementFromString(element);
+    let input = searchBox.children[1];
     input.addEventListener("keyup", (e) => {
-      let query = e.target.value;
+      const query = e.target.value;
       this.search(query);
     });
     input.addEventListener(
@@ -94,41 +124,34 @@ class Table {
       (e) => (input.parentElement.style.border = "2px solid #bfc8cc")
     );
 
-    searchBox.append(icon, input);
-
-    let tableHead = document.querySelector(".table-head");
+    const tableHead = document.querySelector(".table-head");
     tableHead.append(searchBox);
   }
 
-  updatePageInfo() {
-    let pageInfo = document.querySelector(".page-info");
-    pageInfo.innerText = this.pageInfo;
-  }
-
   renderPagination() {
-    let pagination = document.createElement("div");
-    let page = document.createElement("span");
-    page.classList.add("page-info");
-    page.innerText = this.pageInfo;
+    let element = `
+      <div>
+        <span class="page-info">1 - 10 of Page 1</span>
+        <span class="right">
+          <span>
+            <span>Rows per page: </span>
+            <select id="rows-per-page">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+            </select>
+          </span>
+          <span>
+            <button id="prev">Previous</button>
+            <button id="next">Next</button>
+          </span>
+        </span>
+      </div>
+    `;
 
-    let rightSpan = document.createElement("span");
-    rightSpan.classList.add("right");
+    let pagination = this.createElementFromString(element);
 
-    let right1 = document.createElement("span");
-    let rowsCountLabel = document.createElement("span");
-    rowsCountLabel.innerText = "Rows per page: ";
-
-    let select = document.createElement("select");
-    select.setAttribute("id", "rows-per-page");
-    let rowsPerPage = [10, 20, 30];
-    rowsPerPage.forEach((value) => {
-      let option = document.createElement("option");
-      option.setAttribute("value", value);
-      option.textContent = value;
-
-      select.append(option);
-    });
-
+    let select = pagination.querySelector("select");
     select.addEventListener("change", (e) => {
       this.itemsPerPage = e.target.value * 1;
       this.currentPage = 1;
@@ -141,31 +164,31 @@ class Table {
       this.updatePageInfo();
     });
 
-    right1.append(rowsCountLabel, select);
-
-    let right2 = document.createElement("span");
-
-    let paginationButtons = [
-      { id: "prev", label: "Previous" },
-      { id: "next", label: "Next" },
-    ];
-
-    for (const [_, { id, label }] of Object.entries(paginationButtons)) {
-      let button = document.createElement("button");
-      button.setAttribute("id", id);
-      button.textContent = label;
-      button.addEventListener("click", () => {
-        this.paginate(id);
+    let paginationButtons = pagination.querySelectorAll("button");
+    paginationButtons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        this.paginate(e.target.id);
       });
-      right2.append(button);
-    }
-
-    rightSpan.append(right1, right2);
-    pagination.append(page, rightSpan);
+    });
 
     let tablePagination = document.querySelector(".table-pagination");
     tablePagination.append(...pagination.childNodes);
-    // tablePagination.style.visibility = dataCount <= 5 ? "hidden" : "visible";
+  }
+
+  dropTable() {
+    const table = document.querySelector("table");
+    table.remove();
+  }
+
+  updatePageInfo() {
+    const pageInfo = document.querySelector(".page-info");
+    pageInfo.innerText = this.pageInfo;
+  }
+
+  resetRowsPerPage() {
+    this.itemsPerPage = 10;
+    const rowsPerPage = document.querySelector("#rows-per-page");
+    rowsPerPage.value = 10;
   }
 
   changeTab(tabType) {
@@ -175,9 +198,29 @@ class Table {
     this.tableData = this.data;
     this.currentPage = 1;
     this.calculateTableData();
-    this.recalculatePagination();
-    this.updatePageInfo();
     this.render();
+    this.updatePageInfo();
+  }
+
+  paginate(type) {
+    type === "next" ? this.currentPage++ : this.currentPage--;
+    this.dropTable();
+    this.calculateTableData();
+    this.render();
+    this.updatePageInfo();
+    this.calculatePaginationButtonsState();
+  }
+
+  search(query) {
+    this.dropTable();
+    this.queryData(query);
+    this.calculateTableData();
+    this.render();
+  }
+
+  clearSearchInput() {
+    const searchInput = document.querySelector(".search input");
+    searchInput && (searchInput.value = "");
   }
 
   render() {
@@ -188,51 +231,8 @@ class Table {
     throw new Error("Subclasses must implement getHeaderFields method.");
   }
 
-  getRowFields(item) {
+  getRowFields() {
     throw new Error("Subclasses must implement getRowFields method.");
-  }
-
-  resetRowsPerPage() {
-    this.itemsPerPage = 10;
-    let rowsPerPage = document.querySelector("#rows-per-page");
-    rowsPerPage.value = 10;
-  }
-
-  calculateTableData() {
-    this.tabData =
-      this.currentTab === this.getTabs()[0]
-        ? this.tableData
-        : this.tableData.filter((row) => row.status === this.currentTab);
-    this.startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    this.endIndex = this.startIndex + this.itemsPerPage;
-    this.currentPageData = this.tabData.slice(this.startIndex, this.endIndex);
-    this.dataCount = this.tabData.length;
-    this.totalPages = Math.ceil(this.dataCount / this.itemsPerPage);
-    this.pageBeginning =
-      this.currentPage === 1
-        ? 1
-        : this.itemsPerPage * (this.currentPage - 1) + 1;
-    this.pageEnding =
-      this.currentPage === this.totalPages
-        ? this.dataCount
-        : this.pageBeginning + this.itemsPerPage - 1;
-    this.pageInfo = `${this.pageBeginning} - ${this.pageEnding} of Page ${this.currentPage}`;
-    this.totalPages = Math.ceil(this.dataCount / this.itemsPerPage);
-  }
-
-  recalculatePagination() {
-    this.startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    this.endIndex = this.startIndex + this.itemsPerPage;
-    this.currentPageData = this.tabData.slice(this.startIndex, this.endIndex);
-  }
-
-  paginate(type) {
-    type === "next" ? this.currentPage++ : this.currentPage--;
-    this.dropTable();
-    this.calculateTableData();
-    this.render();
-    this.updatePageInfo();
-    this.calculatePaginationButtonsState();
   }
 }
 
@@ -245,7 +245,6 @@ class LoanApplicationHistoryTable extends Table {
 
   render() {
     const tableElement = document.createElement("table");
-
     let tableHead = tableElement.createTHead();
     const headerRow = tableHead.insertRow();
 
@@ -274,18 +273,19 @@ class LoanApplicationHistoryTable extends Table {
       th.textContent = field;
       headerRow.appendChild(th);
     }
+
     let tableBody = tableElement.createTBody();
+
     for (const item of this.currentPageData) {
       const row = tableBody.insertRow();
+
       for (const field of this.getRowFields(item)) {
         const cell = row.insertCell();
-
         cell.textContent = field;
       }
     }
 
     const adminTableContainer = document.querySelector(".table-container");
-
     adminTableContainer.append(tableElement);
   }
 
@@ -294,7 +294,7 @@ class LoanApplicationHistoryTable extends Table {
   }
 
   getRowFields(loan) {
-    return [...Object.values(loan)];
+    return [loan.amount, loan.interestRate, loan.tenor, loan.status, loan.date];
   }
 
   getTabs() {
@@ -310,13 +310,11 @@ class LoanOffersTable extends Table {
 
   render() {
     const tableElement = document.createElement("table");
-
     let tableHead = tableElement.createTHead();
     const headerRow = tableHead.insertRow();
 
     for (const field of this.getHeaderFields()) {
       let th = document.createElement("th");
-
       th.textContent = field;
       headerRow.appendChild(th);
     }
@@ -326,6 +324,7 @@ class LoanOffersTable extends Table {
     for (const item of this.currentPageData) {
       const row = tableBody.insertRow();
       let index = 0;
+
       for (const field of this.getRowFields(item)) {
         const cell = row.insertCell();
 
@@ -334,6 +333,7 @@ class LoanOffersTable extends Table {
         } else {
           cell.textContent = field;
         }
+
         index++;
       }
     }
@@ -358,32 +358,30 @@ class LoanOffersTable extends Table {
   getAdminActions(loanOffer) {
     let adminActions = document.createElement("div");
     adminActions.classList.add("admin-actions");
-    let editBtn = document.createElement("div");
-    editBtn.classList.add("admin-action");
-    editBtn.classList.add("accept");
-    let editText = document.createElement("span");
-    editText.innerText = "Edit";
-    let editIcon = document.createElement("img");
-    editIcon.setAttribute("src", "./assets/images/check_.svg");
-    editBtn.append(editText, editIcon);
+
+    let element = `
+      <div class="admin-action accept">
+        <span>Edit</span>
+        <span>📝</span>
+      </div>
+    `;
+    let editBtn = this.createElementFromString(element);
     editBtn.addEventListener("click", () => {
       modals.editLoanOffer.render(loanOffer, "approve");
     });
 
-    let deleteBtn = document.createElement("div");
-    deleteBtn.classList.add("admin-action");
-    deleteBtn.classList.add("decline");
-    let deleteText = document.createElement("span");
-    deleteText.innerText = "Delete";
-    let deleteIcon = document.createElement("img");
-    deleteIcon.setAttribute("src", "./assets/images/model_x.svg");
-    deleteBtn.append(deleteText, deleteIcon);
+    element = `
+      <div class="admin-action decline">
+        <span>Delete</span>
+        <span>X</span>
+      </div>
+    `;
+    let deleteBtn = this.createElementFromString(element);
     deleteBtn.addEventListener("click", () => {
       modals.confirmOfferDeletion.render(loanOffer, "delete");
     });
 
     adminActions.append(editBtn, deleteBtn);
-
     return adminActions;
   }
 }
@@ -413,7 +411,18 @@ class UsersTable extends Table {
   }
 
   getRowFields(user) {
-    return [...Object.values(user), ""];
+    return [
+      user.id,
+      user.firstName,
+      user.lastName,
+      user.gender,
+      user.phoneNumber,
+      user.email,
+      user.homeAddress,
+      user.workAddress,
+      user.status,
+      "",
+    ];
   }
 
   render() {
@@ -447,10 +456,13 @@ class UsersTable extends Table {
       th.textContent = field;
       headerRow.appendChild(th);
     }
+
     let tableBody = tableElement.createTBody();
+
     for (const item of this.currentPageData) {
       const row = tableBody.insertRow();
       let index = 0;
+
       for (const field of this.getRowFields(item)) {
         const cell = row.insertCell();
 
@@ -464,21 +476,18 @@ class UsersTable extends Table {
     }
 
     const adminTableContainer = document.querySelector(".table-container");
-
     adminTableContainer.append(tableElement);
   }
 
-  search(query) {
-    // if (!query) return;
-    this.dropTable();
-    this.tableData = this.data.filter(
-      (item) =>
-        item["email"].toLowerCase().includes(query.toLowerCase()) ||
-        item["firstName"].toLowerCase().includes(query.toLowerCase()) ||
-        item["lastName"].toLowerCase().includes(query.toLowerCase())
-    );
-    this.calculateTableData();
-    this.render();
+  queryData(query) {
+    this.tableData = !query
+      ? this.data
+      : this.data.filter(
+          (item) =>
+            item["email"].toLowerCase().includes(query.toLowerCase()) ||
+            item["firstName"].toLowerCase().includes(query.toLowerCase()) ||
+            item["lastName"].toLowerCase().includes(query.toLowerCase())
+        );
   }
 
   getTabs() {
@@ -488,26 +497,25 @@ class UsersTable extends Table {
   getAdminActions(user) {
     let adminActions = document.createElement("div");
     adminActions.classList.add("admin-actions");
-    let verifyBtn = document.createElement("div");
-    verifyBtn.classList.add("admin-action");
-    verifyBtn.classList.add("accept");
-    let verifyText = document.createElement("span");
-    verifyText.innerText = "Verify";
-    let verifyIcon = document.createElement("img");
-    verifyIcon.setAttribute("src", "./assets/images/check_.svg");
-    verifyBtn.append(verifyText, verifyIcon);
+
+    let element = `
+      <div class="admin-action accept">
+        <span>Verify</span>
+        <img src="./assets/images/check_.svg" alt="verify icon"/>
+      </div>
+    `;
+    let verifyBtn = this.createElementFromString(element);
     verifyBtn.addEventListener("click", () => {
       modals.confirm.render(user);
     });
 
-    let revertBtn = document.createElement("div");
-    revertBtn.classList.add("admin-action");
-    revertBtn.classList.add("decline");
-    let revertText = document.createElement("span");
-    revertText.innerText = "Revert";
-    let revertIcon = document.createElement("img");
-    revertIcon.setAttribute("src", "./assets/images/model_x.svg");
-    revertBtn.append(revertText, revertIcon);
+    element = `
+      <div class="admin-action decline">
+        <span>Revert</span>
+        <img src="./assets/images/model_x.svg" alt="revert icon">
+      </div>
+    `;
+    let revertBtn = this.createElementFromString(element);
     revertBtn.addEventListener("click", () => {
       modals.confirm.render(user, "revert");
     });
@@ -536,9 +544,9 @@ class AdminLoansTable extends Table {
 
   render() {
     const tableElement = document.createElement("table");
-
     let tableHead = tableElement.createTHead();
     const headerRow = tableHead.insertRow();
+
     for (const field of this.getHeaderFields()) {
       let th = document.createElement("th");
       th.textContent = field;
@@ -546,9 +554,11 @@ class AdminLoansTable extends Table {
     }
 
     let tableBody = tableElement.createTBody();
+
     for (const item of this.currentPageData) {
       const row = tableBody.insertRow();
       let index = 0;
+
       for (const field of this.getRowFields(item)) {
         const cell = row.insertCell();
 
@@ -574,22 +584,21 @@ class AdminLoansTable extends Table {
     }
 
     const adminTableContainer = document.querySelector(".table-container");
-
     adminTableContainer.append(tableElement);
   }
-  search(query) {
-    // if (!query) return;
-    this.dropTable();
-    this.tableData = this.data.filter((item) =>
-      item["email"].toLowerCase().includes(query.toLowerCase())
-    );
-    this.calculateTableData();
-    this.render();
+
+  queryData(query) {
+    this.tableData = !query
+      ? this.data
+      : this.data.filter((item) =>
+          item["email"].toLowerCase().includes(query.toLowerCase())
+        );
   }
 
   getTabs() {
     return ["All", "Active", "Paid"];
   }
+
   getHeaderFields() {
     return [
       "Loan ID",
@@ -605,20 +614,33 @@ class AdminLoansTable extends Table {
   }
 
   getRowFields(loan) {
-    return [...Object.values(loan), "", ""];
+    return [
+      loan.id,
+      loan.email,
+      loan.amount,
+      loan.interest,
+      loan.tenor,
+      loan.status,
+      loan.installment,
+      loan.startDate,
+      loan.dueDate,
+      "",
+      "",
+    ];
   }
 
   getAdminAction(loan) {
-    let adminAction = document.createElement("div");
-    adminAction.classList.add("admin-actions");
-    let repaymentBtn = document.createElement("div");
-    repaymentBtn.classList.add("admin-action");
-    repaymentBtn.classList.add("post-repayment");
-    let text = document.createElement("span");
-    text.innerText = "Post repayment";
-    let icon = document.createElement("img");
-    icon.setAttribute("src", "./assets/images/check_.svg");
-    repaymentBtn.append(text, icon);
+    let html = `
+    <div class="admin-actions">
+      <div class="admin-action post-repayment">
+        <span>Post repayment</span>
+        <img src="./assets/images/check_.svg" alt="post repayment icon">
+      </div>
+    </div>
+    `;
+    let adminAction = range.createContextualFragment(html).children[0];
+    let repaymentBtn = adminAction.children[0];
+
     repaymentBtn.addEventListener("click", () => {
       if (loan.status !== "Active") return;
       modals.repayment.render();
@@ -628,7 +650,6 @@ class AdminLoansTable extends Table {
     repaymentBtn.style.cursor =
       loan.status === "Paid" ? "not-allowed" : "pointer";
 
-    adminAction.append(repaymentBtn);
     return adminAction;
   }
 }
@@ -646,17 +667,19 @@ class UserLoansTable extends Table {
 
     let tableHead = tableElement.createTHead();
     const headerRow = tableHead.insertRow();
+
     for (const field of this.getHeaderFields()) {
       let th = document.createElement("th");
-
       th.textContent = field;
       headerRow.appendChild(th);
     }
 
     let tableBody = tableElement.createTBody();
+
     for (const item of this.currentPageData) {
       const row = tableBody.insertRow();
       let index = 0;
+
       for (const field of this.getRowFields(item)) {
         const cell = row.insertCell();
 
@@ -676,21 +699,13 @@ class UserLoansTable extends Table {
     }
 
     const adminTableContainer = document.querySelector(".table-container");
-
     adminTableContainer.append(tableElement);
-  }
-  search(query) {
-    this.dropTable();
-    this.tableData = this.data.filter((item) =>
-      item["email"].toLowerCase().includes(query.toLowerCase())
-    );
-    this.calculateTableData();
-    this.render();
   }
 
   getTabs() {
     return ["All", "Active", "Paid"];
   }
+
   getHeaderFields() {
     return [
       "Loan ID",
@@ -717,119 +732,51 @@ class UserLoansTable extends Table {
       "",
     ];
   }
-
-  getAdminAction(loan) {
-    let adminAction = document.createElement("div");
-    adminAction.classList.add("admin-actions");
-    let repaymentBtn = document.createElement("div");
-    repaymentBtn.classList.add("admin-action");
-    repaymentBtn.classList.add("post-repayment");
-    let text = document.createElement("span");
-    text.innerText = "Post repayment";
-    let icon = document.createElement("img");
-    icon.setAttribute("src", "./assets/images/check_.svg");
-    repaymentBtn.append(text, icon);
-    repaymentBtn.addEventListener("click", () => {
-      if (loan.status !== "Active") return;
-      console.log({ repayment: loan });
-    });
-
-    repaymentBtn.style.opacity = loan.status === "Paid" && 0.4;
-    repaymentBtn.style.cursor =
-      loan.status === "Paid" ? "not-allowed" : "pointer";
-
-    adminAction.append(repaymentBtn);
-    return adminAction;
-  }
 }
 
 class RepaymentHistoryTable extends Table {
   constructor(data) {
     super(data);
-    // this.renderTabs();
     this.renderPagination();
-    // this.prev_button = document.querySelector("#prev");
-    // this.next_button = document.querySelector("#next");
-
-    // this.prev_button.disabled = this.currentPage === 1;
-    // this.prev_button.disabled
-    //   ? (this.prev_button.style.opacity = ".5")
-    //   : (this.prev_button.style.opacity = "1");
-
-    // this.next_button.disabled = this.currentPage === this.totalPages;
-    // this.next_button.disabled
-    //   ? (this.next_button.style.opacity = ".5")
-    //   : (this.next_button.style.opacity = "1");
+    this.calculatePaginationButtonsState();
   }
 
   render() {
     const tableElement = document.createElement("table");
-
     let tableHead = tableElement.createTHead();
     const headerRow = tableHead.insertRow();
+
     for (const field of this.getHeaderFields()) {
       let th = document.createElement("th");
-
       th.textContent = field;
       headerRow.appendChild(th);
     }
 
     let tableBody = tableElement.createTBody();
+
     for (const item of this.currentPageData) {
       const row = tableBody.insertRow();
+
       for (const field of this.getRowFields(item)) {
         const cell = row.insertCell();
-
         cell.textContent = field;
       }
     }
 
     const adminTableContainer = document.querySelector(".table-container");
-
     adminTableContainer.append(tableElement);
-  }
-  search(query) {
-    this.dropTable();
-    this.tableData = this.data.filter((item) =>
-      item["email"].toLowerCase().includes(query.toLowerCase())
-    );
-    this.calculateTableData();
-    this.render();
   }
 
   getTabs() {
     return [];
   }
+
   getHeaderFields() {
     return ["Loan ID", "Amount", "Date"];
   }
 
   getRowFields(repayment) {
-    return [...Object.values(repayment)];
-  }
-
-  getAdminAction(loan) {
-    let adminAction = document.createElement("div");
-    adminAction.classList.add("admin-actions");
-    let repaymentBtn = document.createElement("div");
-    repaymentBtn.classList.add("admin-action");
-    repaymentBtn.classList.add("post-repayment");
-    let text = document.createElement("span");
-    text.innerText = "Post repayment";
-    let icon = document.createElement("img");
-    icon.setAttribute("src", "./assets/images/check_.svg");
-    repaymentBtn.append(text, icon);
-    repaymentBtn.addEventListener("click", () => {
-      if (loan.status !== "Active") return;
-      console.log({ repayment: loan });
-    });
-
-    repaymentBtn.style.opacity = loan.status === "Paid" && 0.4;
-    repaymentBtn.style.cursor =
-      loan.status === "Paid" ? "not-allowed" : "pointer";
-
-    adminAction.append(repaymentBtn);
-    return adminAction;
+    return [repayment.id, repayment.amount, repayment.date];
   }
 }
 
@@ -843,17 +790,7 @@ class LoanApplicationsTable extends Table {
   }
 
   render() {
-    let tabData =
-      this.currentTab === this.getTabs()[0]
-        ? this.tableData
-        : this.tableData.filter((row) => row.status === this.currentTab);
-
-    let startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    let endIndex = startIndex + this.itemsPerPage;
-    let currentPageData = tabData.slice(startIndex, endIndex);
-
     const tableElement = document.createElement("table");
-
     let tableHead = tableElement.createTHead();
     const headerRow = tableHead.insertRow();
 
@@ -882,8 +819,10 @@ class LoanApplicationsTable extends Table {
       th.textContent = field;
       headerRow.appendChild(th);
     }
+
     let tableBody = tableElement.createTBody();
-    for (const item of currentPageData) {
+
+    for (const item of this.currentPageData) {
       const row = tableBody.insertRow();
       let index = 0;
       for (const field of this.getRowFields(item)) {
@@ -894,6 +833,7 @@ class LoanApplicationsTable extends Table {
         } else {
           cell.textContent = field;
         }
+
         index++;
       }
     }
@@ -904,54 +844,49 @@ class LoanApplicationsTable extends Table {
   }
 
   getAdminActions(loan) {
-    let adminActions = document.createElement("div");
-    adminActions.classList.add("admin-actions");
-    let approveBtn = document.createElement("div");
-    approveBtn.classList.add("admin-action");
-    approveBtn.classList.add("accept");
-    let approveText = document.createElement("span");
-    approveText.innerText = "Approve";
-    let approveIcon = document.createElement("img");
-    approveIcon.setAttribute("src", "./assets/images/check_.svg");
-    approveBtn.append(approveText, approveIcon);
+    let element = `
+      <div class="admin-actions">
+        <button class="admin-action accept">
+          <span>Approve</span>
+          <img src="./assets/images/check_.svg" alt="approve icon"/>
+        </button>
+        <button class="admin-action decline">
+          <span>Reject</span>
+          <img src="./assets/images/model_x.svg" alt="reject icon" />
+        </button>
+      </div>
+    `;
+
+    let adminActions = this.createElementFromString(element);
+    let [approveBtn, rejectBtn] = adminActions.children;
     approveBtn.addEventListener("click", () => {
       if (loan.status !== "Pending") return;
       modals.confirm.render(loan, "approve");
     });
-
-    let rejectBtn = document.createElement("div");
-    rejectBtn.classList.add("admin-action");
-    rejectBtn.classList.add("decline");
-    let rejectText = document.createElement("span");
-    rejectText.innerText = "Reject";
-    let rejectIcon = document.createElement("img");
-    rejectIcon.setAttribute("src", "./assets/images/model_x.svg");
-    rejectBtn.append(rejectText, rejectIcon);
     rejectBtn.addEventListener("click", () => {
       if (loan.status !== "Pending") return;
       modals.confirm.render(loan, "reject");
     });
 
-    adminActions.append(approveBtn, rejectBtn);
-
     if (loan.status !== "Pending") {
       adminActions.style.opacity = 0.1;
-      adminActions
-        .querySelectorAll(".admin-action")
-        .forEach((action) => (action.style.cursor = "not-allowed"));
+      [approveBtn, rejectBtn].forEach(
+        (button) => (button.style.cursor = "not-allowed")
+      );
     }
 
     return adminActions;
   }
-  search(query) {
-    this.dropTable();
-    this.tableData = this.data.filter(
-      (item) =>
-        item["email"].toLowerCase().includes(query.toLowerCase()) ||
-        item["firstName"].toLowerCase().includes(query.toLowerCase()) ||
-        item["lastName"].toLowerCase().includes(query.toLowerCase())
-    );
-    this.render();
+
+  queryData(query) {
+    this.tableData = !query
+      ? this.data
+      : this.data.filter(
+          (item) =>
+            item["email"].toLowerCase().includes(query.toLowerCase()) ||
+            item["firstName"].toLowerCase().includes(query.toLowerCase()) ||
+            item["lastName"].toLowerCase().includes(query.toLowerCase())
+        );
   }
 
   getTabs() {

@@ -1,4 +1,3 @@
-// import { data } from "./data.js";
 import { createAdminTable } from "./tableFactory.js";
 import modals from "./modalFactory.js";
 import * as API from "./api.js";
@@ -7,9 +6,7 @@ const dataContainer = document.querySelector(".data");
 const tableToDisplay =
   dataContainer && dataContainer.getAttribute("data-to-display");
 
-let url = new URL(`https://qc-ctdn.onrender.com/db`);
-fetch(url)
-  .then((res) => res.json())
+API.fetchTableData()
   .then((data) => {
     tableToDisplay && createAdminTable(tableToDisplay, data[tableToDisplay]);
 
@@ -32,7 +29,9 @@ fetch(url)
   .catch((err) => {
     let errorMessage = document.createElement("p");
     errorMessage.innerText = err.message;
-    dataContainer.append(errorMessage);
+    dataContainer?.append(errorMessage);
+
+    console.log(err);
   });
 
 /**
@@ -87,12 +86,6 @@ loanRequestForm?.addEventListener("submit", (e) => {
 let loanOffers = document.querySelector("#request-loan #loan-offers");
 loanOffers &&
   API.getLoanOffers()
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error("Status code error :" + res.status);
-    })
     .then((offers) => {
       for (let offer of offers) {
         let loanOffer = document.createElement("option");

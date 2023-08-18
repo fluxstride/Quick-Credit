@@ -42,7 +42,7 @@ a {
 
 @media (min-width: 1280px) and (max-width: 1600px) {
   .container {
-    padding-inline: 10.8rem;
+    padding-inline: 10rem;
   }
 }
 @media (min-width: 1600px) {
@@ -627,8 +627,10 @@ input::placeholder {
   padding: 0.4rem 1.2rem;
   color: #fff;
   display: flex;
+  align-items: center;
   gap: 1rem;
   cursor: pointer;
+  border: none;
 }
 .admin-actions .accept,
 .admin-actions .post-repayment {
@@ -679,10 +681,10 @@ input::placeholder {
 }
 
 .logout {
-  border: 2px solid #fff;
+  border: 1px solid #fff;
   color: #fff;
   background: transparent;
-  /* font-weight: 600; */
   padding: 0.5rem 1rem;
   cursor: pointer;
+  margin-left: 2rem;
 }
