@@ -29,16 +29,22 @@
         </div>
       </div>
     </nav>
-
+    <div class="page-navigation">
+      <div class="container">
+        <ul>
+          <li><a href="admin.html">Dashboard</a></li>
+          <li><a href="users.html">Users</a></li>
+          <li>
+            <a href="loan-applications.html">Loan applications</a>
+          </li>
+          <li><a href="admin-loans.html">Loans</a></li>
+          <li class="active"><a href="loan-offers.html">Loan offers</a></li>
+        </ul>
+      </div>
+    </div>
     <main class="container">
       <div class="dashboard">
-        <div class="go-back">
-          <img src="./assets/images/chevron_left.svg" alt="go back" />
-          <span> Go back </span>
-        </div>
-
         <h1 class="title">Create loan offer</h1>
-
         <div class="form-container" id="create-loan-offer">
           <form>
             <input name="amount" id="" placeholder="Amount" required />
@@ -55,9 +61,9 @@
             <input type="submit" value="Create" />
           </form>
         </div>
-
+        <h1 class="title">Loan Offers</h1>
         <div class="data" data-to-display="loan-offers">
-          <h1 class="title">Loan Offers</h1>
+          <div class="custom-loader"></div>
           <div class="table-container"></div>
           <div class="table-pagination"></div>
         </div>

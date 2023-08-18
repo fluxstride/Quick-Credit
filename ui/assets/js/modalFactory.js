@@ -7,133 +7,104 @@ class Modal {
     throw Error("Subclasses must implement the render method");
   }
 
+  createElementFromString(elementString) {
+    let range = document.createRange();
+    return range.createContextualFragment(elementString).children[0];
+  }
+
   drop() {
     let modal = document.querySelector(".modal");
     modal.remove();
   }
 }
 
-class Success extends Modal {
-  render(message) {
-    let modal = document.createElement("div");
-    modal.classList.add("modal");
-    modal.addEventListener("click", (e) => {
-      e.currentTarget === e.target && this.drop();
-      location.reload();
-    });
-
-    let content = document.createElement("div");
-    content.classList.add("content");
-
-    let header = document.createElement("div");
-    header.classList.add("header");
-    let title = document.createElement("h2");
-    title.classList.add("title");
-    let close = document.createElement("div");
-    close.classList.add("close");
-    let closeIcon = document.createElement("img");
-    closeIcon.setAttribute("src", "./assets/images/cross.svg");
-    close.append(closeIcon);
-    close.addEventListener("click", this.drop);
-    header.append(title, close);
-
-    let body = document.createElement("div");
-    body.classList.add("body");
-    let messageText = document.createElement("p");
-    messageText.classList.add("message");
-    messageText.textContent = message + " ✅";
-    body.append(messageText);
-
-    content.append(header, body);
-    modal.append(content);
-    document.body.append(modal);
+class Status extends Modal {
+  constructor(status) {
+    super();
+    this.status = status;
   }
-}
 
-class Failure extends Modal {
   render(message) {
-    let modal = document.createElement("div");
-    modal.classList.add("modal");
+    let element = `
+      <div class="modal">
+        <div class="content">
+          <div class="header">
+            <h2 class="title"></h2>
+            <div class="close">
+              <img src="./assets/images/cross.svg" />
+            </div>
+          </div>
+          <div class="body">
+            <p class="message"></p>
+          </div>
+        </div>
+      </div>  
+    `;
+
+    let modal = this.createElementFromString(element);
+    let modalContent = modal.children[0];
+    let modalHeader = modalContent.children[0];
+    let modalClose = modalHeader.children[1];
+    let modalBody = modalContent.children[1];
+    let messageElement = modalBody.children[0];
+    messageElement.textContent =
+      message + (this.status === "success" ? " ✅" : " ❌");
+
     modal.addEventListener("click", (e) => {
       e.currentTarget === e.target && this.drop();
-      location.reload();
+      this.status === "success" && location.reload();
     });
+    modalClose.addEventListener("click", this.drop);
 
-    let content = document.createElement("div");
-    content.classList.add("content");
-
-    let header = document.createElement("div");
-    header.classList.add("header");
-    let title = document.createElement("h2");
-    title.classList.add("title");
-    let close = document.createElement("div");
-    close.classList.add("close");
-    let closeIcon = document.createElement("img");
-    closeIcon.setAttribute("src", "./assets/images/cross.svg");
-    close.append(closeIcon);
-    close.addEventListener("click", this.drop);
-    header.append(title, close);
-
-    let body = document.createElement("div");
-    body.classList.add("body");
-    let messageText = document.createElement("p");
-    messageText.classList.add("message");
-    messageText.textContent = message + " ❌";
-    body.append(messageText);
-
-    content.append(header, body);
-    modal.append(content);
     document.body.append(modal);
   }
 }
 
 class PostRepayment extends Modal {
   render() {
-    let modal = document.createElement("div");
-    modal.classList.add("modal");
+    let element = `
+      <div class="modal">
+        <div class="content">
+          <div class="header">
+            <span class="title">
+              <img src="./assets/images/loan_details.svg" />
+              <h3>Post Repayment</h3>
+            </span>
+            <span class="close">
+              <img src="./assets/images/cross.svg" />
+            </span>
+          </div>
+          <div class="body">
+            <div class="form-container" id="post-repayment">
+              <form>
+                <input type="number" placeholder="Amount" required="true" />
+                <input type="submit" value="Post" />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    let modal = this.createElementFromString(element);
+    let modalContent = modal.children[0];
+    let modalHeader = modalContent.children[0];
+    let modalClose = modalHeader.children[1];
+    let modalBody = modalContent.children[1];
+    let form = modalBody.children[0].children[0];
+    let amountInput = form.children[0];
+    let submitButton = form.children[1];
+
     modal.addEventListener("click", (e) => {
       e.currentTarget === e.target && this.drop();
     });
-
-    let content = document.createElement("div");
-    content.classList.add("content");
-    let header = document.createElement("div");
-    header.classList.add("header");
-    let title = document.createElement("h2");
-    title.classList.add("title");
-    let titleIcon = document.createElement("img");
-    titleIcon.setAttribute("src", "./assets/images/loan_details.svg");
-    let titleText = document.createElement("h3");
-    titleText.innerText = "Post Repayment";
-    title.append(titleIcon, titleText);
-    let close = document.createElement("div");
-    close.classList.add("close");
-    let closeIcon = document.createElement("img");
-    closeIcon.setAttribute("src", "./assets/images/cross.svg");
-    close.append(closeIcon);
-    close.addEventListener("click", this.drop);
-    header.append(title, close);
-
-    let body = document.createElement("div");
-    body.classList.add("body");
-    let formContainer = document.createElement("div");
-    formContainer.classList.add("form-container");
-    formContainer.setAttribute("id", "post-repayment");
-
-    let form = document.createElement("form");
-    let amountInput = document.createElement("input");
-    amountInput.setAttribute("type", "number");
-    amountInput.setAttribute("placeholder", "Amount");
-    amountInput.setAttribute("required", true);
+    modalClose.addEventListener("click", this.drop);
     amountInput.value = 43750;
-    let submitButton = document.createElement("input");
-    submitButton.setAttribute("type", "submit");
-    submitButton.setAttribute("value", "Post");
-    form.append(amountInput, submitButton);
+
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      let success = new Success();
-      let failure = new Failure();
+      let success = new Status("success");
+      let failure = new Status("failure");
       let amount = amountInput.value;
       submitButton.value = "Posting...";
       submitButton.disabled = true;
@@ -158,11 +129,6 @@ class PostRepayment extends Modal {
         })
         .finally(() => this.drop());
     });
-
-    formContainer.append(form);
-    body.append(formContainer);
-    content.append(header, body);
-    modal.append(content);
     document.body.append(modal);
   }
 }
@@ -218,8 +184,8 @@ class Confirm extends Modal {
     confirmButton.classList.add("button", `button--${type}`);
     confirmButton.textContent = type;
     confirmButton.addEventListener("click", () => {
-      let success = new Success();
-      let failure = new Failure();
+      let success = new Status("success");
+      let failure = new Status("failure");
       confirmButton.textContent = "loading...";
       confirmButton.disabled = true;
 
@@ -274,6 +240,7 @@ class Confirm extends Modal {
     document.body.append(modal);
   }
 }
+
 class ConfirmOfferDeletion extends Modal {
   render(offer) {
     let modal = document.createElement("div");
@@ -305,9 +272,9 @@ class ConfirmOfferDeletion extends Modal {
     confirmButton.classList.add("button", `button--delete`);
     confirmButton.textContent = "delete";
     confirmButton.addEventListener("click", () => {
-      let success = new Success();
-      let failure = new Failure();
-      confirmButton.textContent = "loading...";
+      let success = new Status("success");
+      let failure = new Status("failure");
+      confirmButton.textContent = "deleting...";
       confirmButton.disabled = true;
 
       API.deleteLoanOffer(offer.id)
@@ -344,80 +311,64 @@ class ConfirmOfferDeletion extends Modal {
 
 class EditLoanOffer extends Modal {
   render(offer) {
-    let modal = document.createElement("div");
-    modal.classList.add("modal");
+    let element = `
+      <div class="modal">
+        <div class="content">
+          <div class="header">
+            <span class="title">
+              <img src="./assets/images/loan_details.svg" />
+              <h3>Edit loan offer</h3>
+            </span>
+            <span class="close">
+              <img src="./assets/images/cross.svg" />
+            </span>
+          </div>
+          <div class="body">
+            <div class="form-container" id="post-repayment">
+              <form>
+                <input type="number" placeholder="Amount" required="true" />
+                <select>
+                  <option value="">Select interest rate</option>
+                  <option value="5%">5%</option>
+                  <option value="10%">10%</option>
+                </select>
+                <select>
+                  <option value="">Select interest rate</option>
+                  <option value="6 months">6 months</option>
+                  <option value="12 months">12 months</option>
+                </select>
+                <input type="submit" value="Save" />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    let modal = this.createElementFromString(element);
+    let modalContent = modal.children[0];
+    let modalHeader = modalContent.children[0];
+    let modalClose = modalHeader.children[1];
+    let modalBody = modalContent.children[1];
+    let form = modalBody.children[0].children[0];
+    let amountInput = form.children[0];
+    let interestRate = form.children[1];
+    let loanTenor = form.children[2];
+    let submitButton = form.children[3];
+
     modal.addEventListener("click", (e) => {
       e.currentTarget === e.target && this.drop();
     });
+    modalClose.addEventListener("click", this.drop);
 
-    let content = document.createElement("div");
-    content.classList.add("content");
-    let header = document.createElement("div");
-    header.classList.add("header");
-    let title = document.createElement("h2");
-    title.classList.add("title");
-    let titleIcon = document.createElement("img");
-    titleIcon.setAttribute("src", "./assets/images/loan_details.svg");
-    let titleText = document.createElement("h3");
-    titleText.innerText = "Edit loan offer";
-    title.append(titleIcon, titleText);
-    let close = document.createElement("div");
-    close.classList.add("close");
-    let closeIcon = document.createElement("img");
-    closeIcon.setAttribute("src", "./assets/images/cross.svg");
-    close.append(closeIcon);
-    close.addEventListener("click", this.drop);
-    header.append(title, close);
-
-    let body = document.createElement("div");
-    body.classList.add("body");
-    let formContainer = document.createElement("div");
-    formContainer.classList.add("form-container");
-    formContainer.setAttribute("id", "post-repayment");
-
-    let form = document.createElement("form");
-    let amountInput = document.createElement("input");
-    amountInput.setAttribute("type", "number");
-    amountInput.setAttribute("placeholder", "Amount");
-    amountInput.setAttribute("required", true);
     amountInput.value = offer.amount;
-
-    let interestRate = document.createElement("select");
-    let defaultInterestOption = document.createElement("option");
-    defaultInterestOption.setAttribute("value", "");
-    defaultInterestOption.textContent = "Select interest rate";
-    interestRate.append(defaultInterestOption);
-    ["5%", "10%"].forEach((rate) => {
-      let rateOption = document.createElement("option");
-      rateOption.value = rate;
-      rateOption.textContent = rate;
-      interestRate.append(rateOption);
-    });
     interestRate.value = offer.interestRate;
-
-    let loanTenor = document.createElement("select");
-    let defaultTenorOption = document.createElement("option");
-    defaultTenorOption.setAttribute("value", "");
-    defaultTenorOption.textContent = "Select interest rate";
-    loanTenor.append(defaultTenorOption);
-
-    ["6 months", "12 months"].forEach((tenor) => {
-      let tenorOption = document.createElement("option");
-      tenorOption.value = tenor;
-      tenorOption.textContent = tenor;
-      loanTenor.append(tenorOption);
-    });
     loanTenor.value = offer.tenor;
-
-    let submitButton = document.createElement("input");
-    submitButton.setAttribute("type", "submit");
-    submitButton.setAttribute("value", "Save");
-    form.append(amountInput, interestRate, loanTenor, submitButton);
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      let success = new Success();
-      let failure = new Failure();
+      let success = new Status("success");
+      let failure = new Status("failure");
       let amount = amountInput.value;
       let interest = interestRate.value;
       let tenor = loanTenor.value;
@@ -447,18 +398,13 @@ class EditLoanOffer extends Modal {
         })
         .finally(() => this.drop());
     });
-
-    formContainer.append(form);
-    body.append(formContainer);
-    content.append(header, body);
-    modal.append(content);
     document.body.append(modal);
   }
 }
 
 export default {
-  success: new Success(),
-  failure: new Failure(),
+  success: new Status("success"),
+  failure: new Status("failure"),
   confirm: new Confirm(),
   repayment: new PostRepayment(),
   editLoanOffer: new EditLoanOffer(),
