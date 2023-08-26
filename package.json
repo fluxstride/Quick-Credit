@@ -5,7 +5,8 @@
   "main": "mockserver.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node mockserver.js"
+    "start": "node mockserver.js",
+    "json":"json-server"
   },
   "repository": {
     "type": "git",

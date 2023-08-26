@@ -1,4 +1,5 @@
-let baseUrl = new URL("https://qc-ctdn.onrender.com/");
+// let baseUrl = new URL("https://qc-ctdn.onrender.com/");
+let baseUrl = new URL("http://localhost:4000");
 
 export async function fetchTableData() {
   let response = await fetch(baseUrl + "db");
