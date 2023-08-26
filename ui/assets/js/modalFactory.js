@@ -1,4 +1,5 @@
 import * as API from "./api.js";
+import { capitalize } from "./util.js";
 
 class Modal {
   constructor() {}
@@ -146,6 +147,7 @@ class Confirm extends Modal {
 
     let header = document.createElement("div");
     header.classList.add("header");
+
     let title = document.createElement("h2");
     title.classList.add("title");
     title.append("⚠️");
@@ -153,9 +155,15 @@ class Confirm extends Modal {
 
     let body = document.createElement("div");
     body.classList.add("body");
+
     let message = document.createElement("p");
     message.classList.add("message");
     let messageText;
+
+    let username = document.createElement("p");
+    username.classList.add("username");
+    let usernameText = `${data.firstName} ${data.lastName}?`;
+    username.append(usernameText);
 
     switch (type) {
       case "verify":
@@ -173,16 +181,14 @@ class Confirm extends Modal {
       default:
         break;
     }
-    let username = document.createElement("p");
-    username.classList.add("username");
-    let usernameText = `${data.firstName} ${data.lastName}?`;
-    username.append(usernameText);
+
     message.append(messageText, username);
+
     let buttons = document.createElement("div");
     buttons.classList.add("buttons");
     let confirmButton = document.createElement("button");
-    confirmButton.classList.add("button", `button--${type}`);
-    confirmButton.textContent = type;
+    confirmButton.classList.add("button", `button--${type.toLowerCase()}`);
+    confirmButton.textContent = capitalize(type);
     confirmButton.addEventListener("click", () => {
       let success = new Status("success");
       let failure = new Status("failure");
@@ -227,7 +233,7 @@ class Confirm extends Modal {
 
     let cancleButton = document.createElement("button");
     cancleButton.classList.add("button");
-    cancleButton.textContent = "cancle";
+    cancleButton.textContent = capitalize("cancel");
     cancleButton.addEventListener("click", () => {
       this.drop();
     });
@@ -238,6 +244,7 @@ class Confirm extends Modal {
     content.append(header, body);
     modal.append(content);
     document.body.append(modal);
+    // modal.classList.add("show");
   }
 }
 
@@ -295,7 +302,7 @@ class ConfirmOfferDeletion extends Modal {
 
     let cancleButton = document.createElement("button");
     cancleButton.classList.add("button");
-    cancleButton.textContent = "cancle";
+    cancleButton.textContent = "cancel";
     cancleButton.addEventListener("click", () => {
       this.drop();
     });
