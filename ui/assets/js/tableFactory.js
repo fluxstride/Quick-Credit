@@ -378,7 +378,7 @@ class LoanOffersTable extends Table {
     `;
     let deleteBtn = this.createElementFromString(element);
     deleteBtn.addEventListener("click", () => {
-      modals.confirmOfferDeletion.render(loanOffer, "delete");
+      modals.confirm.render(loanOffer, "delete");
     });
 
     adminActions.append(editBtn, deleteBtn);
@@ -506,7 +506,7 @@ class UsersTable extends Table {
     `;
     let verifyBtn = this.createElementFromString(element);
     verifyBtn.addEventListener("click", () => {
-      modals.confirm.render(user);
+      modals.confirm.render(user, "verify");
     });
 
     element = `
