@@ -1669,6 +1669,16 @@
       "amount": "43750",
       "date": "5/24/2023",
       "id": "q5Ia46M"
+    },
+    {
+      "amount": "43750",
+      "date": "5/24/2023",
+      "id": "gr5GULX"
+    },
+    {
+      "amount": "43750",
+      "date": "5/24/2023",
+      "id": "W1jfTyd"
     }
   ],
   "users": [
@@ -1703,7 +1713,7 @@
       "email": "amcgarva2@salon.com",
       "homeAddress": "5086 Laurel Crossing",
       "workAddress": "2002 Longview Crossing",
-      "status": "Unverified"
+      "status": "Verified"
     },
     {
       "id": "cLZ7uE",
@@ -3600,7 +3610,7 @@
       "phoneNumber": "430-209-6383",
       "homeAddress": "6 Meadow Ridge Junction",
       "workAddress": "4927 Sheridan Hill",
-      "status": "Pending"
+      "status": "Approved"
     },
     {
       "id": "o242FG",
@@ -5078,12 +5088,6 @@
     }
   ],
   "loan-offers": [
-    {
-      "amount": "400000",
-      "interestRate": "10%",
-      "tenor": "6 months",
-      "id": "_DtqmP1"
-    },
     {
       "amount": "200000",
       "interestRate": "5%",
