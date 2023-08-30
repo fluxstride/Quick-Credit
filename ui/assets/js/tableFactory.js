@@ -1,4 +1,5 @@
 import modals from "./modalFactory.js";
+import { createElementFromString } from "./util.js";
 
 class Table {
   constructor(data, itemsPerPage = 10) {
@@ -16,11 +17,6 @@ class Table {
       this.dataCount > this.itemsPerPage ? "flex" : "none";
     tableContainer.style.marginBottom =
       this.dataCount > this.itemsPerPage ? "0" : "10rem";
-  }
-
-  createElementFromString(elementString) {
-    let range = document.createRange();
-    return range.createContextualFragment(elementString).children[0];
   }
 
   calculateTableData() {
@@ -109,19 +105,21 @@ class Table {
       </div>
     `;
 
-    const searchBox = this.createElementFromString(element);
-    let input = searchBox.children[1];
-    input.addEventListener("keyup", (e) => {
+    const searchBox = createElementFromString(element);
+    let [, searchInput] = searchBox.children;
+    searchInput.addEventListener("keyup", (e) => {
       const query = e.target.value;
       this.search(query);
     });
-    input.addEventListener(
+    searchInput.addEventListener(
       "focus",
-      (e) => (input.parentElement.style.border = "2px solid var(--lemon-green)")
+      (e) =>
+        (searchInput.parentElement.style.border =
+          "2px solid var(--lemon-green)")
     );
-    input.addEventListener(
+    searchInput.addEventListener(
       "focusout",
-      (e) => (input.parentElement.style.border = "2px solid #bfc8cc")
+      (e) => (searchInput.parentElement.style.border = "2px solid #bfc8cc")
     );
 
     const tableHead = document.querySelector(".table-head");
@@ -149,9 +147,10 @@ class Table {
       </div>
     `;
 
-    let pagination = this.createElementFromString(element);
+    let pagination = createElementFromString(element);
 
     let select = pagination.querySelector("select");
+
     select.addEventListener("change", (e) => {
       this.itemsPerPage = e.target.value * 1;
       this.currentPage = 1;
@@ -365,7 +364,7 @@ class LoanOffersTable extends Table {
         <span>📝</span>
       </div>
     `;
-    let editBtn = this.createElementFromString(element);
+    let editBtn = createElementFromString(element);
     editBtn.addEventListener("click", () => {
       modals.editLoanOffer.render(loanOffer, "approve");
     });
@@ -376,7 +375,7 @@ class LoanOffersTable extends Table {
         <span>X</span>
       </div>
     `;
-    let deleteBtn = this.createElementFromString(element);
+    let deleteBtn = createElementFromString(element);
     deleteBtn.addEventListener("click", () => {
       modals.confirm.render(loanOffer, "delete");
     });
@@ -504,7 +503,7 @@ class UsersTable extends Table {
         <img src="./assets/images/check_.svg" alt="verify icon"/>
       </div>
     `;
-    let verifyBtn = this.createElementFromString(element);
+    let verifyBtn = createElementFromString(element);
     verifyBtn.addEventListener("click", () => {
       modals.confirm.render(user, "verify");
     });
@@ -515,7 +514,7 @@ class UsersTable extends Table {
         <img src="./assets/images/model_x.svg" alt="revert icon">
       </div>
     `;
-    let revertBtn = this.createElementFromString(element);
+    let revertBtn = createElementFromString(element);
     revertBtn.addEventListener("click", () => {
       modals.confirm.render(user, "revert");
     });
@@ -638,7 +637,7 @@ class AdminLoansTable extends Table {
       </div>
     </div>
     `;
-    let adminAction = this.createElementFromString(element);
+    let adminAction = createElementFromString(element);
     let repaymentBtn = adminAction.children[0];
 
     repaymentBtn.addEventListener("click", () => {
@@ -857,7 +856,7 @@ class LoanApplicationsTable extends Table {
       </div>
     `;
 
-    let adminActions = this.createElementFromString(element);
+    let adminActions = createElementFromString(element);
     let [approveBtn, rejectBtn] = adminActions.children;
     approveBtn.addEventListener("click", () => {
       if (loan.status !== "Pending") return;

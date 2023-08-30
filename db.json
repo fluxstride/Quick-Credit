@@ -5089,16 +5089,16 @@
   ],
   "loan-offers": [
     {
-      "amount": "200000",
-      "interestRate": "5%",
-      "tenor": "12 months",
-      "id": "fpmhmiD"
-    },
-    {
-      "amount": "50000",
+      "amount": "500000000",
       "interestRate": "5%",
       "tenor": "6 months",
       "id": "FIr083a"
+    },
+    {
+      "amount": "2000000",
+      "interestRate": "10%",
+      "tenor": "6 months",
+      "id": "Kbz0V3c"
     }
   ]
 }
