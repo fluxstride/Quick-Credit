@@ -1664,6 +1664,21 @@
       "amount": "43750",
       "date": "5/24/2023",
       "id": "EC1U0vs"
+    },
+    {
+      "amount": "43750",
+      "date": "5/24/2023",
+      "id": "q5Ia46M"
+    },
+    {
+      "amount": "43750",
+      "date": "5/24/2023",
+      "id": "gr5GULX"
+    },
+    {
+      "amount": "43750",
+      "date": "5/24/2023",
+      "id": "W1jfTyd"
     }
   ],
   "users": [
@@ -1676,7 +1691,7 @@
       "email": "nyoseloff0@psu.edu",
       "homeAddress": "6707 Bartelt Circle",
       "workAddress": "53 Moland Drive",
-      "status": "Unverified"
+      "status": "Verified"
     },
     {
       "id": "SbNgRU",
@@ -1687,7 +1702,7 @@
       "email": "nyoseloff0@psu.edu",
       "homeAddress": "6707 Bartelt Circle",
       "workAddress": "53 Moland Drive",
-      "status": "Verified"
+      "status": "Unverified"
     },
     {
       "id": "5T07AW",
@@ -1698,7 +1713,7 @@
       "email": "amcgarva2@salon.com",
       "homeAddress": "5086 Laurel Crossing",
       "workAddress": "2002 Longview Crossing",
-      "status": "Unverified"
+      "status": "Verified"
     },
     {
       "id": "cLZ7uE",
@@ -3595,7 +3610,7 @@
       "phoneNumber": "430-209-6383",
       "homeAddress": "6 Meadow Ridge Junction",
       "workAddress": "4927 Sheridan Hill",
-      "status": "Pending"
+      "status": "Approved"
     },
     {
       "id": "o242FG",
@@ -5074,22 +5089,16 @@
   ],
   "loan-offers": [
     {
-      "amount": "400000",
-      "interestRate": "10%",
-      "tenor": "6 months",
-      "id": "_DtqmP1"
-    },
-    {
-      "amount": "2222222",
-      "interestRate": "5%",
-      "tenor": "12 months",
-      "id": "fpmhmiD"
-    },
-    {
-      "amount": "50000",
+      "amount": "500000000",
       "interestRate": "5%",
       "tenor": "6 months",
       "id": "FIr083a"
+    },
+    {
+      "amount": "2000000",
+      "interestRate": "10%",
+      "tenor": "6 months",
+      "id": "Kbz0V3c"
     }
   ]
 }

@@ -1,4 +1,15 @@
 import * as API from "./api.js";
+import {
+  createElem,
+  appendChildren,
+  createButton,
+  buttonText,
+  buttonDisabled,
+  createStatusElements,
+  renderMessage,
+  capitalize,
+  createElementFromString,
+} from "./util.js";
 
 class Modal {
   constructor() {}
@@ -7,24 +18,20 @@ class Modal {
     throw Error("Subclasses must implement the render method");
   }
 
-  createElementFromString(elementString) {
-    let range = document.createRange();
-    return range.createContextualFragment(elementString).children[0];
-  }
-
   drop() {
     let modal = document.querySelector(".modal");
     modal.remove();
   }
 }
 
-class Status extends Modal {
+export class Status extends Modal {
   constructor(status) {
     super();
     this.status = status;
   }
 
   render(message) {
+    // Create the modal element's HTML structure
     let element = `
       <div class="modal">
         <div class="content">
@@ -41,27 +48,29 @@ class Status extends Modal {
       </div>  
     `;
 
-    let modal = this.createElementFromString(element);
-    let modalContent = modal.children[0];
-    let modalHeader = modalContent.children[0];
-    let modalClose = modalHeader.children[1];
-    let modalBody = modalContent.children[1];
-    let messageElement = modalBody.children[0];
+    let modal = createElementFromString(element);
+    let [modalContent] = modal.children;
+    let [modalHeader, modalBody] = modalContent.children;
+    let [, modalClose] = modalHeader.children;
+    let [messageElement] = modalBody.children;
     messageElement.textContent =
       message + (this.status === "success" ? " ✅" : " ❌");
 
+    // Close modal when clicking outside or on close button
     modal.addEventListener("click", (e) => {
       e.currentTarget === e.target && this.drop();
       this.status === "success" && location.reload();
     });
     modalClose.addEventListener("click", this.drop);
 
+    // Append modal to the document body
     document.body.append(modal);
   }
 }
 
 class PostRepayment extends Modal {
   render() {
+    // Create the modal element's HTML structure
     let element = `
       <div class="modal">
         <div class="content">
@@ -86,77 +95,76 @@ class PostRepayment extends Modal {
       </div>
     `;
 
-    let modal = this.createElementFromString(element);
-    let modalContent = modal.children[0];
-    let modalHeader = modalContent.children[0];
-    let modalClose = modalHeader.children[1];
-    let modalBody = modalContent.children[1];
-    let form = modalBody.children[0].children[0];
-    let amountInput = form.children[0];
-    let submitButton = form.children[1];
+    // Create modal and extract its components
+    let modal = createElementFromString(element);
+    let [modalContent] = modal.children;
+    let [modalHeader, modalBody] = modalContent.children;
+    let [, modalClose] = modalHeader.children;
+    let [formContainer] = modalBody.children;
+    let [form] = formContainer.children;
+    let [amountInput, submitButton] = form.children;
 
+    // Close modal when clicking outside or on close button
     modal.addEventListener("click", (e) => {
       e.currentTarget === e.target && this.drop();
     });
     modalClose.addEventListener("click", this.drop);
-    amountInput.value = 43750;
 
-    form.addEventListener("submit", (e) => {
+    // Set default amount and handle form submission
+    amountInput.value = 43750;
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      let success = new Status("success");
-      let failure = new Status("failure");
-      let amount = amountInput.value;
+      const { value: amount } = amountInput;
       submitButton.value = "Posting...";
       submitButton.disabled = true;
 
-      let repayment = {
-        amount,
-        date: "5/24/2023",
-      };
-
-      API.postRepayment(repayment)
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error("Status code error :" + res.status);
-        })
-        .then(() => {
-          success.render(`${amount} posted successfully`);
-        })
-        .catch((err) => {
-          failure.render("Repayment failed");
-        })
-        .finally(() => this.drop());
+      try {
+        const response = await API.postRepayment({ amount, date: "5/24/2023" });
+        if (!response.ok)
+          throw new Error(`Status code error: ${response.status}`);
+        new Status("success").render(`${amount} posted successfully`);
+      } catch (err) {
+        new Status("failure").render("Repayment failed");
+      } finally {
+        this.drop();
+      }
     });
+
+    // Append the modal to the document body
     document.body.append(modal);
   }
 }
 
 class Confirm extends Modal {
   render(data, type = "verify") {
-    let modal = document.createElement("div");
-    modal.classList.add("modal");
+    // Create modal element
+    const modal = createElem("div", "modal");
     modal.addEventListener("click", (e) => {
+      // Close modal when clicked outside the content area
       e.currentTarget === e.target && this.drop();
     });
 
-    let content = document.createElement("div");
-    content.classList.add("content");
+    // Create content element
+    const content = createElem("div", "content");
 
-    let header = document.createElement("div");
-    header.classList.add("header");
-    let title = document.createElement("h2");
-    title.classList.add("title");
-    title.append("⚠️");
-    header.append(title);
+    // Create header element
+    const header = createElem("div", "header");
 
-    let body = document.createElement("div");
-    body.classList.add("body");
-    let message = document.createElement("p");
-    message.classList.add("message");
+    // Create title element with warning emoji
+    const title = createElem("h2", "title");
+    title.textContent = "⚠️";
+    header.appendChild(title);
+
+    // Create body element
+    const body = createElem("div", "body");
+
+    // Create message and username elements
+    const message = createElem("p", "message");
+    const username = createElem("p", "username");
+    username.textContent = `${data.firstName} ${data.lastName}?`;
+
+    // Determine and set the message text based on the type
     let messageText;
-
     switch (type) {
       case "verify":
         messageText = `Are you sure you want to ${type} `;
@@ -170,147 +178,96 @@ class Confirm extends Modal {
           type === "approve" ? "approve" : "reject"
         } loan for `;
         break;
+      case "delete":
+        messageText = "Delete loan offer?";
+        break;
       default:
         break;
     }
-    let username = document.createElement("p");
-    username.classList.add("username");
-    let usernameText = `${data.firstName} ${data.lastName}?`;
-    username.append(usernameText);
-    message.append(messageText, username);
-    let buttons = document.createElement("div");
-    buttons.classList.add("buttons");
-    let confirmButton = document.createElement("button");
-    confirmButton.classList.add("button", `button--${type}`);
-    confirmButton.textContent = type;
-    confirmButton.addEventListener("click", () => {
-      let success = new Status("success");
-      let failure = new Status("failure");
-      confirmButton.textContent = "loading...";
-      confirmButton.disabled = true;
+    message.textContent = messageText;
 
-      let messages = {
-        verify: {
-          success: "User verification successful",
-          failure: "User verification failed",
-        },
-        revert: {
-          success: "User verification revert successful",
-          failure: "User verification revert failed",
-        },
-        approve: {
-          success: "Loan approval successful",
-          failure: "Loan approval failed",
-        },
-        reject: {
-          success: "Loan rejection successful",
-          failure: "Loan rejection failed",
-        },
-      };
-      let message = messages[type];
+    // Append username to the message
+    appendChildren(message, type !== "delete" ? username : "");
 
-      API.confirmAction(data, type)
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error("Status code error :" + res.status);
-        })
-        .then(() => {
-          success.render(message.success);
-        })
-        .catch((err) => {
-          failure.render(message.failure);
-        })
-        .finally(() => this.drop());
-    });
+    // Create buttons element
+    const buttons = createElem("div", "buttons");
 
-    let cancleButton = document.createElement("button");
-    cancleButton.classList.add("button");
-    cancleButton.textContent = "cancle";
-    cancleButton.addEventListener("click", () => {
-      this.drop();
-    });
-    buttons.append(confirmButton, cancleButton);
+    // Create confirm button
+    const confirmButton = createButton(
+      "button button--" + type,
+      capitalize(type),
+      async () => {
+        // Create success and failure status elements
+        const [success, failure] = createStatusElements();
 
-    body.append(message, buttons);
+        // Update button text and disable it
+        buttonText(confirmButton, "loading...");
+        buttonDisabled(confirmButton, true);
 
-    content.append(header, body);
-    modal.append(content);
-    document.body.append(modal);
-  }
-}
+        // Define messages for different actions
+        const messages = {
+          verify: {
+            success: "User verification successful",
+            failure: "User verification failed",
+          },
+          revert: {
+            success: "User verification revert successful",
+            failure: "User verification revert failed",
+          },
+          approve: {
+            success: "Loan approval successful",
+            failure: "Loan approval failed",
+          },
+          reject: {
+            success: "Loan rejection successful",
+            failure: "Loan rejection failed",
+          },
+          delete: {
+            success: "Loan offer deleted successful",
+            failure: "Loan offer deletion failed",
+          },
+        };
+        const message = messages[type];
 
-class ConfirmOfferDeletion extends Modal {
-  render(offer) {
-    let modal = document.createElement("div");
-    modal.classList.add("modal");
-    modal.addEventListener("click", (e) => {
-      e.currentTarget === e.target && this.drop();
-    });
+        try {
+          // Perform API action and handle responses
+          const response = await API.confirmAction(data, type);
+          if (!response.ok)
+            throw new Error(`Status code error: ${response.status}`);
+          renderMessage(success, message.success);
+        } catch (err) {
+          renderMessage(failure, message.failure);
+        } finally {
+          this.drop();
+        }
+      }
+    );
 
-    let content = document.createElement("div");
-    content.classList.add("content");
+    // Create cancel button
+    const cancelButton = createButton("button", capitalize("cancel"), () =>
+      this.drop()
+    );
 
-    let header = document.createElement("div");
-    header.classList.add("header");
-    let title = document.createElement("h2");
-    title.classList.add("title");
-    title.append("⚠️");
-    header.append(title);
+    // Append buttons to the buttons element
+    appendChildren(buttons, confirmButton, cancelButton);
 
-    let body = document.createElement("div");
-    body.classList.add("body");
-    let message = document.createElement("p");
-    message.classList.add("message");
-    let messageText = "Delete loan offer?";
+    // Append message and buttons to the body
+    appendChildren(body, message, buttons);
 
-    message.append(messageText);
-    let buttons = document.createElement("div");
-    buttons.classList.add("buttons");
-    let confirmButton = document.createElement("button");
-    confirmButton.classList.add("button", `button--delete`);
-    confirmButton.textContent = "delete";
-    confirmButton.addEventListener("click", () => {
-      let success = new Status("success");
-      let failure = new Status("failure");
-      confirmButton.textContent = "deleting...";
-      confirmButton.disabled = true;
+    // Append header and body to the content
+    appendChildren(content, header, body);
 
-      API.deleteLoanOffer(offer.id)
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error("Status code error :" + res.status);
-        })
-        .then(() => {
-          success.render("Loan offer deleted successfully");
-        })
-        .catch((err) => {
-          failure.render("Error deleting loan offer");
-        })
-        .finally(() => this.drop());
-    });
+    // Append content to the modal
+    appendChildren(modal, content);
 
-    let cancleButton = document.createElement("button");
-    cancleButton.classList.add("button");
-    cancleButton.textContent = "cancle";
-    cancleButton.addEventListener("click", () => {
-      this.drop();
-    });
-    buttons.append(confirmButton, cancleButton);
-
-    body.append(message, buttons);
-
-    content.append(header, body);
-    modal.append(content);
+    // Append modal to the document body
     document.body.append(modal);
   }
 }
 
 class EditLoanOffer extends Modal {
   render(offer) {
+    // Create the modal element's HTML structure
     let element = `
       <div class="modal">
         <div class="content">
@@ -345,33 +302,34 @@ class EditLoanOffer extends Modal {
       </div>
     `;
 
-    let modal = this.createElementFromString(element);
-    let modalContent = modal.children[0];
-    let modalHeader = modalContent.children[0];
-    let modalClose = modalHeader.children[1];
-    let modalBody = modalContent.children[1];
-    let form = modalBody.children[0].children[0];
-    let amountInput = form.children[0];
-    let interestRate = form.children[1];
-    let loanTenor = form.children[2];
-    let submitButton = form.children[3];
+    // Create modal and extract its components
+    let modal = createElementFromString(element);
+    let [modalContent] = modal.children;
+    let [modalHeader, modalBody] = modalContent.children;
+    let [, modalClose] = modalHeader.children;
+    let [formContainer] = modalBody.children;
+    let [form] = formContainer.children;
+    let [amountInput, interestInput, loanTenorInput, submitButton] =
+      form.children;
 
+    // Close modal when clicking outside or on close button
     modal.addEventListener("click", (e) => {
       e.currentTarget === e.target && this.drop();
     });
     modalClose.addEventListener("click", this.drop);
 
+    // Set form inputs values to loan offer data
     amountInput.value = offer.amount;
-    interestRate.value = offer.interestRate;
-    loanTenor.value = offer.tenor;
+    interestInput.value = offer.interestRate;
+    loanTenorInput.value = offer.tenor;
 
-    form.addEventListener("submit", (e) => {
+    // Handle form submission
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      let success = new Status("success");
-      let failure = new Status("failure");
-      let amount = amountInput.value;
-      let interest = interestRate.value;
-      let tenor = loanTenor.value;
+      const [success, failure] = createStatusElements();
+      const { value: amount } = amountInput;
+      const { value: interest } = interestInput;
+      const { value: tenor } = loanTenorInput;
 
       submitButton.value = "Saving...";
       submitButton.disabled = true;
@@ -382,22 +340,18 @@ class EditLoanOffer extends Modal {
         tenor,
       };
 
-      API.editLoanOffer(offer.id, data)
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error("Status code error :" + res.status);
-        })
-        .then(() => {
-          success.render(`Offer edited successfully`);
-          return false;
-        })
-        .catch((err) => {
-          failure.render("Repayment failed");
-        })
-        .finally(() => this.drop());
+      try {
+        let response = await API.editLoanOffer(offer.id, data);
+        if (!response.ok) throw new Error("Status code error :" + res.status);
+        renderMessage(success, "Offer edited successfully");
+      } catch (error) {
+        renderMessage(failure, "Repayment failed");
+      } finally {
+        this.drop();
+      }
     });
+
+    // Append the modal to the document body
     document.body.append(modal);
   }
 }
@@ -408,5 +362,4 @@ export default {
   confirm: new Confirm(),
   repayment: new PostRepayment(),
   editLoanOffer: new EditLoanOffer(),
-  confirmOfferDeletion: new ConfirmOfferDeletion(),
 };

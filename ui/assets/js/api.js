@@ -1,40 +1,44 @@
-let baseUrl = new URL("https://qc-ctdn.onrender.com/");
+// let baseUrl = new URL("https://qc-ctdn.onrender.com/");
+let baseUrl = new URL("http://localhost:4000");
 
 export async function fetchTableData() {
   let response = await fetch(baseUrl + "db");
   return response.json();
 }
 
-export function confirmAction(user, type) {
+export function confirmAction(data, type) {
   let linkPath;
   let requestBody;
   switch (type) {
     case "verify":
-      linkPath = `users/${user.id}`;
+      linkPath = `users/${data.id}`;
       requestBody = { status: "Verified" };
       break;
     case "revert":
-      linkPath = `users/${user.id}`;
+      linkPath = `users/${data.id}`;
       requestBody = { status: "Unverified" };
       break;
     case "approve":
-      linkPath = `loan-applications/${user.id}`;
+      linkPath = `loan-applications/${data.id}`;
       requestBody = { status: "Approved" };
       break;
     case "reject":
-      linkPath = `loan-applications/${user.id}`;
+      linkPath = `loan-applications/${data.id}`;
       requestBody = { status: "Rejected" };
+      break;
+    case "delete":
+      linkPath = `loan-offers/${data.id}`;
       break;
     default:
       break;
   }
 
   return fetch(baseUrl + linkPath, {
-    method: "PATCH",
+    method: type === "delete" ? "DELETE" : "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(requestBody),
+    body: JSON.stringify(requestBody ?? {}),
   });
 }
 
@@ -71,11 +75,5 @@ export function editLoanOffer(id, data) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ ...data }),
-  });
-}
-
-export function deleteLoanOffer(id) {
-  return fetch(baseUrl + "loan-offers/" + id, {
-    method: "DELETE",
   });
 }
