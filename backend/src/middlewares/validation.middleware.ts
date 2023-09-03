@@ -4,7 +4,7 @@
 import { Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
 
-function validation(schema: Joi.Schema) {
+const validation = (schema: Joi.Schema) => {
   return async function validationMiddleware(
     req: Request,
     res: Response,
@@ -34,6 +34,6 @@ function validation(schema: Joi.Schema) {
       });
     }
   };
-}
+};
 
 export default validation;

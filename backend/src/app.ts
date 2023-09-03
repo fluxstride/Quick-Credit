@@ -2,7 +2,6 @@ import cors from 'cors';
 import express, { Application, Response } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import path from 'path';
 import pageNotFoundMiddleware from './middlewares/404.middleware';
 import errorMiddleware from './middlewares/error.middleware';
 import controller from './utils/interfaces/controller.interface';
@@ -17,7 +16,7 @@ class App {
     this.port = port;
 
     this.initializeMiddlewares();
-    this.intialiseControllers(controllers);
+    this.intializeControllers(controllers);
     this.initializeErrorHandling();
   }
 
@@ -27,10 +26,9 @@ class App {
     this.express.use(helmet());
     this.express.use(express.json());
     this.express.use(express.urlencoded({ extended: false }));
-    this.express.use(express.static(path.join(__dirname, 'public')));
   }
 
-  private intialiseControllers(controllers: controller[]): void {
+  private intializeControllers(controllers: controller[]): void {
     this.express.get('/', (_, res: Response) => {
       res.json('Welcome to quick_credit api');
     });
