@@ -4,7 +4,7 @@ import { createLoansTable, dropLoansTable } from './queries/loan';
 import {
   createLoanOffersTable,
   dropLoanOffersTable,
-} from './queries/loanOffers';
+} from './queries/loanOffer';
 import {
   createLoanRepaymentsTable,
   dropLoanRepaymentsTable,
