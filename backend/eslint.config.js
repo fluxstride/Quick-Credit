@@ -28,6 +28,7 @@ const eslintConfig = {
     eqeqeq: 'warn',
     'no-console': 'warn',
     '@typescript-eslint/no-confusing-void-expression': 'warn',
+    'import/prefer-default-export': 'off',
   },
   root: true,
   ignorePatterns: ['eslint.config.js', 'dist/'],
